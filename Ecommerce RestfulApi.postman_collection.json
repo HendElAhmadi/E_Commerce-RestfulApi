@@ -449,6 +449,78 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "user by id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9797/test/api/users/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"users",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user order by user Id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9797/test/api/orders/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"orders",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update product quantity by productId",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9797/test/api/products/1?quantity=4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"products",
+						"1"
+					],
+					"query": [
+						{
+							"key": "quantity",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

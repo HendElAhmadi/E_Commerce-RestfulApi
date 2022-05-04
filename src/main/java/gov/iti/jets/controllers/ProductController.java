@@ -13,7 +13,9 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -175,6 +177,54 @@ public class ProductController {
         entityManager.close();
 
         return "Product is created successfully";
+
+    }
+
+    @DELETE
+    @Path("{pid}")
+    public String deleteProduct(@PathParam("pid") int id) {
+
+        TypedQuery<Product> query = entityManager.createQuery("select p from Product p where p.id= :id ", Product.class)
+                .setParameter("id", id);
+
+        try {   
+            EntityTransaction entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
+            Product product = query.getSingleResult();
+
+            entityManager.remove(product);
+            entityTransaction.commit();
+            entityManager.close();
+            return "product deleted successfully";
+        } catch (Exception e) {
+            
+            return "There is no product with this id!";
+        }
+
+    }
+
+    @PATCH
+    @Path("{pid}")
+    public String updateProduct(@PathParam("pid") int id,@QueryParam("quantity") int quantity) {
+
+        TypedQuery<Product> query = entityManager.createQuery("select p from Product p where p.id= :id ", Product.class)
+                .setParameter("id", id);
+
+        try {   
+            EntityTransaction entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
+            Product product = query.getSingleResult();
+            if(product.getQuantity() == quantity){
+                return "It is the same product quantity!!";
+            }
+            product.setQuantity(quantity);
+            entityTransaction.commit();
+            entityManager.close();
+            return "product updated successfully";
+        } catch (Exception e) {
+            
+            return "There is no product with this id!";
+        }
 
     }
 

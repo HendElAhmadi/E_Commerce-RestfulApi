@@ -18,6 +18,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -34,11 +35,53 @@ public class CategoryController {
     public Response getAllCategories() {
 
         TypedQuery<Category> query = entityManager.createQuery("select c from Category c", Category.class);
-        List<Category> categoryList = query.getResultList();
-        CategoryDto categoryDto;
-        List<CategoryDto> categoryDtoList = new ArrayList<CategoryDto>();
-        for (Category category : categoryList) {
-            categoryDto = new CategoryDto();
+        try {
+            List<Category> categoryList = query.getResultList();
+            CategoryDto categoryDto;
+            List<CategoryDto> categoryDtoList = new ArrayList<CategoryDto>();
+            for (Category category : categoryList) {
+                categoryDto = new CategoryDto();
+
+                categoryDto.setId(category.getId());
+                categoryDto.setDescription(category.getDescription());
+                categoryDto.setValue(category.getValue());
+                List<ProductDto> productDtoList = new ArrayList<ProductDto>();
+                for (Product product : category.getProducts()) {
+                    ProductDto productDto = new ProductDto();
+
+                    productDto.setId(product.getId());
+                    productDto.setName(product.getName());
+                    productDto.setCategories(product.getCategories());
+                    productDto.setDescription(product.getDescription());
+                    productDto.setPrice(product.getPrice());
+                    productDtoList.add(productDto);
+                }
+                categoryDto.setProducts(productDtoList);
+
+                categoryDtoList.add(categoryDto);
+            }
+
+            GenericEntity<List<CategoryDto>> entity = new GenericEntity<List<CategoryDto>>(categoryDtoList) {
+            };
+            return Response.ok().entity(entity).build();
+        } catch (Exception e) {
+            GenericEntity<String> message = new GenericEntity<String>("There is no categories!") {
+            };
+            return Response.ok().entity(message).build();
+        }
+    }
+
+    @GET
+    @Path("{cid}")
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public Response getCategory(@PathParam("cid") int id) {
+
+        TypedQuery<Category> query = entityManager
+                .createQuery("select c from Category c where c.id= :id ", Category.class)
+                .setParameter("id", id);
+        try {
+            Category category = query.getSingleResult();
+            CategoryDto categoryDto = new CategoryDto();
 
             categoryDto.setId(category.getId());
             categoryDto.setDescription(category.getDescription());
@@ -55,71 +98,47 @@ public class CategoryController {
                 productDtoList.add(productDto);
             }
             categoryDto.setProducts(productDtoList);
-
-            categoryDtoList.add(categoryDto);
+            GenericEntity<CategoryDto> entity = new GenericEntity<CategoryDto>(categoryDto) {
+            };
+            return Response.ok().entity(entity).build();
+        } catch (Exception e) {
+            GenericEntity<String> message = new GenericEntity<String>("There is no category with this id!") {
+            };
+            return Response.ok().entity(message).build();
         }
-
-        GenericEntity<List<CategoryDto>> entity = new GenericEntity<List<CategoryDto>>(categoryDtoList) {
-        };
-        return Response.ok().entity(entity).build();
-
-    }
-
-    @GET
-    @Path("{cid}")
-    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public CategoryDto getCategory(@PathParam("cid") int id) {
-
-        TypedQuery<Category> query = entityManager
-                .createQuery("select c from Category c where c.id= :id ", Category.class)
-                .setParameter("id", id);
-
-        Category category = query.getSingleResult();
-        CategoryDto categoryDto = new CategoryDto();
-
-        categoryDto.setId(category.getId());
-        categoryDto.setDescription(category.getDescription());
-        categoryDto.setValue(category.getValue());
-        List<ProductDto> productDtoList = new ArrayList<ProductDto>();
-        for (Product product : category.getProducts()) {
-            ProductDto productDto = new ProductDto();
-
-            productDto.setId(product.getId());
-            productDto.setName(product.getName());
-            productDto.setCategories(product.getCategories());
-            productDto.setDescription(product.getDescription());
-            productDto.setPrice(product.getPrice());
-            productDtoList.add(productDto);
-        }
-        categoryDto.setProducts(productDtoList);
-
-        return categoryDto;
 
     }
 
     @GET
     @Path("{cid}/products")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public List<ProductDto> getCategories(@PathParam("cid") Integer id) {
+    public Response getCategories(@PathParam("cid") Integer id) {
 
         TypedQuery<Category> query = entityManager
                 .createQuery("select c from Category c where c.id= :id ", Category.class)
                 .setParameter("id", id);
+        try {
+            Category category = query.getSingleResult();
 
-        Category category = query.getSingleResult();
+            List<ProductDto> productDtoList = new ArrayList<ProductDto>();
+            for (Product product : category.getProducts()) {
+                ProductDto productDto = new ProductDto();
+                productDto.setId(product.getId());
+                productDto.setName(product.getName());
+                productDto.setCategories(product.getCategories());
+                productDto.setDescription(product.getDescription());
+                productDto.setPrice(product.getPrice());
+                productDtoList.add(productDto);
+            }
 
-        List<ProductDto> productDtoList = new ArrayList<ProductDto>();
-        for (Product product : category.getProducts()) {
-            ProductDto productDto = new ProductDto();
-            productDto.setId(product.getId());
-            productDto.setName(product.getName());
-            productDto.setCategories(product.getCategories());
-            productDto.setDescription(product.getDescription());
-            productDto.setPrice(product.getPrice());
-            productDtoList.add(productDto);
+            GenericEntity<List<ProductDto>> entity = new GenericEntity<List<ProductDto>>(productDtoList) {
+            };
+            return Response.ok().entity(entity).build();
+        } catch (Exception e) {
+            GenericEntity<String> message = new GenericEntity<String>("There is no products!") {
+            };
+            return Response.ok().entity(message).build();
         }
-
-        return productDtoList;
 
     }
 
@@ -127,7 +146,8 @@ public class CategoryController {
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public String createCategory(CategoryDto categoryDto) {
 
-        TypedQuery<Category> query = entityManager.createQuery("select c from Category c where c.value= :value ", Category.class)
+        TypedQuery<Category> query = entityManager
+                .createQuery("select c from Category c where c.value= :value ", Category.class)
                 .setParameter("value", categoryDto.getValue());
         if (query.getResultList().size() != 0) {
             return "Category already exists";
@@ -149,4 +169,6 @@ public class CategoryController {
         return "Category is created successfully";
 
     }
+
+  
 }

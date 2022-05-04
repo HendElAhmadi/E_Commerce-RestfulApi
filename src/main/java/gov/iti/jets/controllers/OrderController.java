@@ -15,6 +15,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -145,7 +146,7 @@ public class OrderController {
 
     @POST
     @Path("{uid}/checkout")
-    public String makeOrder(@PathParam("uid") int userId) {
+    public String checkout(@PathParam("uid") int userId) {
 
         TypedQuery<Order> query = entityManager.createQuery("select o from Order o where o.user.id= :id ", Order.class)
                 .setParameter("id", userId);
@@ -192,7 +193,28 @@ public class OrderController {
 
     }
 
+    @DELETE
+    @Path("{uid}")
+    public String deleteCategory(@PathParam("uid") int userId) {
 
+        TypedQuery<Order> query = entityManager.createQuery("select o from Order o where o.user.id= :id ", Order.class)
+                .setParameter("id", userId);
+
+        try {
+            EntityTransaction entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
+            Order order = query.getSingleResult();
+
+            entityManager.remove(order);
+            entityTransaction.commit();
+            entityManager.close();
+            return "user order deleted successfully";
+        } catch (Exception e) {
+
+            return "There is no order to delete!";
+        }
+
+    }
 
     private List<CartProducts> getUserCart(){
         TypedQuery<CartProducts> query2 = entityManager.createQuery("select C from CartProducts C", CartProducts.class);
@@ -201,5 +223,7 @@ public class OrderController {
 
         return cartProductsList;
     }
+
+
 
 }

@@ -11,6 +11,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Produces;
@@ -122,6 +123,29 @@ public class UserController {
         entityManager.close();
 
         return "user created successfully";
+    }
+
+    @DELETE
+    @Path("{uid}")
+    public String deleteUser(@PathParam("uid") int id) {
+
+        TypedQuery<User> query = entityManager.createQuery("select u from User u where u.id= :id ", User.class)
+                .setParameter("id", id);
+
+        try {   
+            EntityTransaction entityTransaction = entityManager.getTransaction();
+            entityTransaction.begin();
+            User user = query.getSingleResult();
+
+            entityManager.remove(user);
+            entityTransaction.commit();
+            entityManager.close();
+            return "user deleted successfully";
+        } catch (Exception e) {
+            
+            return "There is no user with this id!";
+        }
+
     }
 
 }
