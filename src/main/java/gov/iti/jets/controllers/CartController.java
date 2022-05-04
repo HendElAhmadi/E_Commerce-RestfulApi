@@ -8,8 +8,8 @@ import gov.iti.jets.persistence.entities.CartProducts;
 import gov.iti.jets.persistence.entities.Product;
 
 import gov.iti.jets.persistence.util.ManagerFactory;
-import gov.iti.jets.presentation.dtos.CartDto;
-import gov.iti.jets.presentation.dtos.UserCart;
+import gov.iti.jets.dtos.CartDto;
+import gov.iti.jets.dtos.UserCart;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;

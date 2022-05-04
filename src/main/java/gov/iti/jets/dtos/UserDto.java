@@ -1,4 +1,4 @@
-package gov.iti.jets.presentation.dtos;
+package gov.iti.jets.dtos;
 
 import gov.iti.jets.persistence.entities.UserType;
 import jakarta.xml.bind.annotation.XmlRootElement;

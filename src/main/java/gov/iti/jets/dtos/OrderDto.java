@@ -1,4 +1,4 @@
-package gov.iti.jets.presentation.dtos;
+package gov.iti.jets.dtos;
 
 import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.xml.bind.annotation.XmlAccessType;

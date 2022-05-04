@@ -1,29 +1,42 @@
-package gov.iti.jets.presentation.dtos;
+package gov.iti.jets.dtos;
+
+
+
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 
 @XmlRootElement
-public class UserCart {
+public class CartDto {
+    
+    private int cartUserId;
 
     private int cartProductId;
 
-    private String productName;
-
+  
     private int totalPrice;
+
+  
 
     private int quantity;
 
-    public UserCart() {
-    }
-
-    public UserCart(int cartProductId, String productName, int totalPrice, int quantity) {
+    public CartDto(int cartUserId, int cartProductId, int totalPrice, int quantity) {
+        this.cartUserId = cartUserId;
         this.cartProductId = cartProductId;
-        this.productName = productName;
         this.totalPrice = totalPrice;
+      
         this.quantity = quantity;
     }
 
-   
+    public CartDto() {
+    }
+
+    public int getCartUserId() {
+        return cartUserId;
+    }
+
+    public void setCartUserId(int cartUserId) {
+        this.cartUserId = cartUserId;
+    }
 
     public int getCartProductId() {
         return cartProductId;
@@ -41,6 +54,8 @@ public class UserCart {
         this.totalPrice = totalPrice;
     }
 
+  
+
     public int getQuantity() {
         return quantity;
     }
@@ -49,17 +64,13 @@ public class UserCart {
         this.quantity = quantity;
     }
 
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
     @Override
     public String toString() {
-        return "UserCart [cartProductId=" + cartProductId + ", productName=" + productName + ", quantity=" + quantity
+        return "CartDto [cartProductId=" + cartProductId + ", cartUserId=" + cartUserId + ", quantity=" + quantity
                 + ", totalPrice=" + totalPrice + "]";
     }
+
+  
+
+   
 }

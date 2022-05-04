@@ -1,4 +1,4 @@
-package gov.iti.jets.presentation.dtos;
+package gov.iti.jets.dtos;
 
 import java.util.ArrayList;
 import java.util.List;

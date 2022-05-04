@@ -5,7 +5,7 @@ import java.util.List;
 
 import gov.iti.jets.persistence.entities.User;
 import gov.iti.jets.persistence.util.ManagerFactory;
-import gov.iti.jets.presentation.dtos.UserDto;
+import gov.iti.jets.dtos.UserDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
