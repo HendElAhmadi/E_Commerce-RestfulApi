@@ -27,4 +27,4 @@ you can get to see data as an XML or JSON
 # You can apply requests through POSTMAN collection file
 
 # ER Diagram
-![](/ ER_DIAGRAM.png)
+![](/ER_DIAGRAM.png)
