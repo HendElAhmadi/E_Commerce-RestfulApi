@@ -1,0 +1,454 @@
+{
+	"info": {
+		"_postman_id": "f341d6cd-a3f1-4790-b9e9-5e8e0d515ebc",
+		"name": "Ecommerce RestfulApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Categories in xml",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9797/test/api/categories?Accept=applictaion/xml",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"categories"
+					],
+					"query": [
+						{
+							"key": "Accept",
+							"value": "applictaion/xml"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Categories in json",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9797/test/api/categories",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Categories By Id in json",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9797/test/api/categories/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"categories",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Categories ById in xml",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "all products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9797/test/api/products/*",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"products",
+						"*"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "all products in xml",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "product by id",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "categories for a product",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "product by queryparam",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "products for a category",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "all users",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:9797/test/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9797/test/api/users/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"users",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/xml",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\r\n<userDto>\r\n  <email>hend@gmail.com</email>\r\n  <id>5</id>\r\n  <password>1542</password>\r\n  <phoneNumber>147226</phoneNumber>\r\n  <userName>henda</userName>\r\n  <userType>CLERK</userType>\r\n  <wallet>700.0</wallet>\r\n</userDto>"
+				},
+				"url": {
+					"raw": "http://localhost:9797/test/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add category",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\r\n<categoryDto>\r\n  <description>Woww</description>\r\n  <id>4</id>\r\n  <value>soap</value>\r\n</categoryDto>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9797/test/api/categories",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"categories\": [\r\n            {\r\n                \"description\": \"Beautiful\",\r\n                \"id\": 1,\r\n                \"value\": \"showerGel\"\r\n            },\r\n            {\r\n                \"description\": \"good\",\r\n                \"id\": 2,\r\n                \"value\": \"eyeCream\"\r\n            }\r\n        ],\r\n        \"description\": \"Floorish\",\r\n        \"id\": 3,\r\n        \"name\": \"victoria\",\r\n        \"price\": 400,\r\n        \"quantity\": 20\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9797/test/api/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "allcarts",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:9797/test/api/cart/*",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"cart",
+						"*"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get cart by userId",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:9797/test/api/cart/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"cart",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add to cart",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9797/test/api/cart/2?name=RED&quantity=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"cart",
+						"2"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "RED"
+						},
+						{
+							"key": "quantity",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "all orders",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "order by userId",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "create order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9797/test/api/orders/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"orders",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "checkout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9797/test/api/orders/1?checkout=true",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"orders",
+						"1"
+					],
+					"query": [
+						{
+							"key": "checkout",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

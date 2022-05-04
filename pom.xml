@@ -1,0 +1,174 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>eg.gov.iti.jets</groupId>
+    <artifactId>first-rest-api</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>11</maven.compiler.release>
+    </properties>
+
+  <dependencies>
+
+
+
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>jakarta.platform</groupId>
+      <artifactId>jakarta.jakartaee-api</artifactId>
+      <version>9.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+
+
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core-jakarta</artifactId>
+      <version>5.6.7.Final</version>
+  </dependency>
+    
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.28</version>
+    </dependency>
+
+     <!-- JAX-RS API -->
+     <dependency>
+      <groupId>jakarta.ws.rs</groupId>
+      <artifactId>jakarta.ws.rs-api</artifactId>
+      <version>3.0.0</version>
+      <scope>compile</scope>
+  </dependency>
+
+  <!-- JAX-RS Implementation -->
+  <dependency>
+      <groupId>org.glassfish.jersey.containers</groupId>
+      <artifactId>jersey-container-servlet</artifactId>
+      <version>3.0.1</version>
+      <scope>runtime</scope>
+  </dependency>
+
+  <!-- JAX-RS Client Implementation -->
+  <dependency>
+      <groupId>org.glassfish.jersey.core</groupId>
+      <artifactId>jersey-client</artifactId>
+      <version>3.0.1</version>
+      <scope>runtime</scope>
+  </dependency>
+
+  <!-- Dependency Injection Framework for Jersey -->
+  <dependency>
+      <groupId>org.glassfish.jersey.inject</groupId>
+      <artifactId>jersey-hk2</artifactId>
+      <version>3.0.1</version>
+      <scope>runtime</scope>
+  </dependency>
+
+  <!-- Enable Jersey JSON Support -->
+  <dependency>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-json-binding</artifactId>
+      <version>3.0.1</version>
+      <scope>runtime</scope>
+  </dependency>
+
+  <!-- JSON-B API -->
+  <dependency>
+      <groupId>jakarta.json.bind</groupId>
+      <artifactId>jakarta.json.bind-api</artifactId>
+      <version>2.0.0</version>
+      <scope>compile</scope>
+  </dependency>
+
+  <!-- Enable Jersey JAXB Support -->
+  <dependency>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-jaxb</artifactId>
+      <version>3.0.1</version>
+      <scope>runtime</scope>
+  </dependency>
+
+  <!-- JAXB API -->
+  <dependency>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
+      <version>3.0.0</version>
+      <scope>compile</scope>
+  </dependency>
+
+  <!-- JAXB Implementation -->
+  <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+      <version>3.0.0</version>
+      <scope>runtime</scope>
+  </dependency>
+
+
+  </dependencies>
+
+
+  <build>
+
+   
+      <finalName>first-rest-api</finalName>
+      <plugins>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-compiler-plugin</artifactId>
+              <version>3.8.1</version>
+          </plugin>
+    <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-war-plugin</artifactId>
+              <version>3.3.0</version>
+          </plugin>
+					
+					
+
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.0.0</version>
+        <configuration>
+          <mainClass>gov.iti.jets.App</mainClass>
+          <cleanupDaemonThreads>false</cleanupDaemonThreads>
+        </configuration>
+      </plugin>
+
+
+      <plugin>
+        <groupId>org.apache.tomcat.maven</groupId>
+        <artifactId>tomcat7-maven-plugin</artifactId>
+        <version>2.2</version>
+        <configuration>
+        <username>admin</username>
+        <password>admin</password>
+        <url>http://localhost:9797/manager/text</url>
+        <path>/test</path>
+        </configuration>
+        </plugin>
+      
+
+
+    </plugins>
+
+  </build>
+
+</project>
