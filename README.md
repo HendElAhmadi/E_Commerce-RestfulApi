@@ -24,5 +24,7 @@ This api gives E_Commerce services
 
 you can get to see data as an XML or JSON
 
-# You can apply requests through the provided link below
-[POSTMAN](https://www.getpostman.com/collections/ea014b7daa5635c9852c)
+# You can apply requests through POSTMAN collection file
+
+# ER Diagram
+[](ER_DIAGRAM.png)
