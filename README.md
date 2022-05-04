@@ -7,10 +7,14 @@ This api gives E_Commerce services
 * get all users
 * get user by Id
 * add products
+* delete product by product Id
+* update product quantity
 * add categories
 * user can add items to shopping cart
 * user can place an order
+* user can delete his order
 * user can proceed to checkout 
+
 
 
 # Used in this project:
