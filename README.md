@@ -23,3 +23,6 @@ This api gives E_Commerce services
 # Data format
 
 you can get to see data as an XML or JSON
+
+# You can apply requests through the provided link below
+[POSTMAN](https://www.getpostman.com/collections/ea014b7daa5635c9852c)
