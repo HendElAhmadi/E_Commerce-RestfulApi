@@ -18,7 +18,7 @@ This api gives E_Commerce services
 
 # Handled Cases
 
-when transaction is done  user cart items are deleted as well as to his order ,
+1 when transaction is done  user cart items are deleted as well as to his order ,
 also his money is decreased by the paid amount of money 
 and the product quantity is decreased in stock
 
