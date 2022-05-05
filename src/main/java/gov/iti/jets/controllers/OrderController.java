@@ -113,9 +113,14 @@ public class OrderController {
     @POST
     @Path("{uid}")
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public String makeOrder(@PathParam("uid") int userId, OrderDto orderDto) {
+    public String makeOrder(@PathParam("uid") int userId) {
 
         EntityManager entityManager = entityManagerFactory.createEntityManager();
+        TypedQuery<User> query1 = entityManager.createQuery("select u from User u where u.id= :id ", User.class)
+        .setParameter("id", userId);
+        if(query1.getResultList().size()==0){
+            return "user doesn't exist!!";
+        }
         TypedQuery<Order> query = entityManager.createQuery("select o from Order o where o.user.id= :id ", Order.class)
                 .setParameter("id", userId);
         if (query.getResultList().size() != 0) {
