@@ -185,10 +185,11 @@ public class ProductController {
     public String deleteProduct(@PathParam("pid") int id) {
 
         EntityManager entityManager2 = entityManagerFactory.createEntityManager();
-        TypedQuery<Product> query = entityManager2.createQuery("select p from Product p where p.id= :id ", Product.class)
+        TypedQuery<Product> query = entityManager2
+                .createQuery("select p from Product p where p.id= :id ", Product.class)
                 .setParameter("id", id);
 
-        try {   
+        try {
             EntityTransaction entityTransaction = entityManager2.getTransaction();
             entityTransaction.begin();
             Product product = query.getSingleResult();
@@ -198,7 +199,7 @@ public class ProductController {
             entityManager2.close();
             return "product deleted successfully";
         } catch (Exception e) {
-            
+
             return "There is no product with this id!";
         }
 
@@ -206,17 +207,18 @@ public class ProductController {
 
     @PATCH
     @Path("{pid}")
-    public String updateProduct(@PathParam("pid") int id,@QueryParam("quantity") int quantity) {
+    public String updateProductQuantity(@PathParam("pid") int id, @QueryParam("quantity") int quantity) {
 
         EntityManager entityManager2 = entityManagerFactory.createEntityManager();
-        TypedQuery<Product> query = entityManager2.createQuery("select p from Product p where p.id= :id ", Product.class)
+        TypedQuery<Product> query = entityManager2
+                .createQuery("select p from Product p where p.id= :id ", Product.class)
                 .setParameter("id", id);
 
-        try {   
+        try {
             EntityTransaction entityTransaction = entityManager2.getTransaction();
             entityTransaction.begin();
             Product product = query.getSingleResult();
-            if(product.getQuantity() == quantity){
+            if (product.getQuantity() == quantity) {
                 return "It is the same product quantity!!";
             }
             product.setQuantity(quantity);
@@ -224,7 +226,7 @@ public class ProductController {
             entityManager2.close();
             return "product updated successfully";
         } catch (Exception e) {
-            
+
             return "There is no product with this id!";
         }
 

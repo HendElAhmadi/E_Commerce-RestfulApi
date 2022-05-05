@@ -3,6 +3,8 @@ package gov.iti.jets.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import gov.iti.jets.persistence.entities.CartProducts;
+import gov.iti.jets.persistence.entities.Order;
 import gov.iti.jets.persistence.entities.User;
 import gov.iti.jets.persistence.util.ManagerFactory;
 import gov.iti.jets.dtos.UserDto;
@@ -29,7 +31,7 @@ public class UserController {
     private final static EntityManagerFactory entityManagerFactory = ManagerFactory.getEntityManagerFactory();
 
     private EntityManager entityManager = entityManagerFactory.createEntityManager();
-    
+
     @GET
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response getAllUsers() {
@@ -53,7 +55,7 @@ public class UserController {
 
             GenericEntity<List<UserDto>> entity = new GenericEntity<List<UserDto>>(userDtoList) {
             };
-           
+
             return Response.ok().entity(entity).build();
 
         } catch (Exception e) {
@@ -71,7 +73,6 @@ public class UserController {
     public Response getUserById(@PathParam("uid") int id) {
 
         try {
-           
 
             TypedQuery<User> query = entityManager.createQuery("select u from User u where u.id= :id ", User.class)
                     .setParameter("id", id);
@@ -90,7 +91,7 @@ public class UserController {
 
             GenericEntity<UserDto> message = new GenericEntity<UserDto>(userDto) {
             };
-           
+
             return Response.ok().entity(message).build();
         } catch (Exception e) {
             GenericEntity<String> message = new GenericEntity<String>("There is no user with this id!") {
@@ -135,18 +136,34 @@ public class UserController {
     @Path("{uid}")
     public String deleteUser(@PathParam("uid") int id) {
 
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        TypedQuery<User> query = entityManager.createQuery("select u from User u where u.id= :id ", User.class)
+        EntityManager entityManager2 = entityManagerFactory.createEntityManager();
+        TypedQuery<User> query = entityManager2.createQuery("select u from User u where u.id= :id ", User.class)
                 .setParameter("id", id);
 
         try {
-            EntityTransaction entityTransaction = entityManager.getTransaction();
+            EntityTransaction entityTransaction = entityManager2.getTransaction();
             entityTransaction.begin();
             User user = query.getSingleResult();
 
-            entityManager.remove(user);
+            TypedQuery<Order> query2 = entityManager2
+                    .createQuery("select o from Order o where o.user.id= :id ", Order.class)
+                    .setParameter("id", id);
+            if (query2.getResultList().size() != 0) {
+
+                return "user has an order ,you should delete order first";
+            }
+
+            TypedQuery<CartProducts> query3 = entityManager2
+                    .createQuery("select C from CartProducts C where C.user.id= :id ", CartProducts.class)
+                    .setParameter("id", id);
+            if (query3.getResultList().size() != 0) {
+
+                return "user has a cart ,you should delete the  user cart first";
+            }
+
+            entityManager2.remove(user);
             entityTransaction.commit();
-            entityManager.close();
+            entityManager2.close();
             return "user deleted successfully";
         } catch (Exception e) {
 
@@ -157,7 +174,7 @@ public class UserController {
 
     @PATCH
     @Path("{uid}")
-    public String upadateUserWallet(@PathParam("uid") int id,UserWalletDto userWalletDto) {
+    public String upadateUserWallet(@PathParam("uid") int id, UserWalletDto userWalletDto) {
 
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         TypedQuery<User> query = entityManager.createQuery("select u from User u where u.id= :id ", User.class)
@@ -168,7 +185,7 @@ public class UserController {
             entityTransaction.begin();
             User user = query.getSingleResult();
 
-            user.setWallet(user.getWallet()+userWalletDto.getUserWallet());
+            user.setWallet(user.getWallet() + userWalletDto.getUserWallet());
             entityManager.persist(user);
             entityTransaction.commit();
             entityManager.close();

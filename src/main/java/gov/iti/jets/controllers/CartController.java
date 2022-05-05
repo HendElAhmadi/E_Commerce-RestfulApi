@@ -14,7 +14,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
-
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -37,33 +37,32 @@ public class CartController {
     public Response getAllcarts() {
 
         TypedQuery<CartProducts> query = entityManager.createQuery("select C from CartProducts C", CartProducts.class);
-       try {
+        try {
 
-           List<CartProducts> cartProductsList = query.getResultList();
-        CartDto cartDto;
-        List<CartDto> cartDtoList = new ArrayList<CartDto>();
-        for (CartProducts cartProducts : cartProductsList) {
+            List<CartProducts> cartProductsList = query.getResultList();
+            CartDto cartDto;
+            List<CartDto> cartDtoList = new ArrayList<CartDto>();
+            for (CartProducts cartProducts : cartProductsList) {
 
-            cartDto = new CartDto();
+                cartDto = new CartDto();
 
-            cartDto.setCartProductId(cartProducts.getCartId().getProductId());
-            cartDto.setCartUserId(cartProducts.getCartId().getUserId());
-            cartDto.setTotalPrice(cartProducts.getTotalPrice());
-            cartDto.setQuantity(cartProducts.getQuantity());
+                cartDto.setCartProductId(cartProducts.getCartId().getProductId());
+                cartDto.setCartUserId(cartProducts.getCartId().getUserId());
+                cartDto.setTotalPrice(cartProducts.getTotalPrice());
+                cartDto.setQuantity(cartProducts.getQuantity());
 
-            cartDtoList.add(cartDto);
-        }
+                cartDtoList.add(cartDto);
+            }
 
-        GenericEntity<List<CartDto>> entity = new GenericEntity<List<CartDto>>(cartDtoList) {
-        };
-        return Response.ok().entity(entity).build();
+            GenericEntity<List<CartDto>> entity = new GenericEntity<List<CartDto>>(cartDtoList) {
+            };
+            return Response.ok().entity(entity).build();
 
-       } catch (Exception e) {
+        } catch (Exception e) {
             GenericEntity<String> message = new GenericEntity<String>("There is no carts!") {
             };
             return Response.ok().entity(message).build();
-       }
-        
+        }
 
     }
 
@@ -73,7 +72,7 @@ public class CartController {
     public Response getUserCart(@PathParam("uid") int userId) {
 
         TypedQuery<CartProducts> query = entityManager.createQuery("select C from CartProducts C", CartProducts.class);
-        
+
         List<CartProducts> cartProductsList = query.getResultList();
         UserCart userCart;
         List<UserCart> userCartList = new ArrayList<UserCart>();
@@ -91,8 +90,8 @@ public class CartController {
             }
 
         }
-        if(userCartList.size() ==0){
-            
+        if (userCartList.size() == 0) {
+
             GenericEntity<String> message = new GenericEntity<String>("Cart is Empty!") {
             };
             return Response.ok().entity(message).build();
@@ -109,7 +108,7 @@ public class CartController {
     public String addToCart(@PathParam("uid") int userId, @QueryParam("name") String productName,
             @QueryParam("quantity") int quantity) {
 
-        EntityManager entityManager2 = entityManagerFactory.createEntityManager();       
+        EntityManager entityManager2 = entityManagerFactory.createEntityManager();
         TypedQuery<Product> query = entityManager2
                 .createQuery("select p from Product p where p.name= :name ", Product.class)
                 .setParameter("name", productName);
@@ -133,11 +132,11 @@ public class CartController {
         TypedQuery<CartProducts> query2 = entityManager2
                 .createQuery("select c from CartProducts c where c.cartId= :cartId ", CartProducts.class)
                 .setParameter("cartId", cartId);
-       
+
         if (query2.getResultList().size() != 0) {
-            
+
             CartProducts cartProducts = query2.getResultList().get(0);
-            if(cartProducts.getQuantity()==quantity){
+            if (cartProducts.getQuantity() == quantity) {
                 return "your product already exist with the same quantiy";
             }
             setUserCart(cartProducts, product, quantity);
@@ -160,14 +159,39 @@ public class CartController {
 
     }
 
-
-    private void setUserCart(CartProducts cartProducts,Product product, int quantity){
+    private void setUserCart(CartProducts cartProducts, Product product, int quantity) {
         cartProducts.setQuantity(quantity);
         cartProducts.setTotalPrice(product.getPrice() * quantity);
 
-       
+    }
 
+    @DELETE
+    @Path("{uid}")
+    public String deleteCart(@PathParam("uid") int userId) {
+
+        EntityManager entityManager2 = entityManagerFactory.createEntityManager();
         
+            TypedQuery<CartProducts> query = entityManager2
+                    .createQuery("select C from CartProducts C where C.user.id= :id ", CartProducts.class)
+                    .setParameter("id", userId);
+            if(query.getResultList().size()==0){
+                return "there is no cart to delete";
+            }
+            List<CartProducts> cartProductsList = query.getResultList();
+            
+            EntityTransaction entityTransaction = entityManager2.getTransaction();
+            entityTransaction.begin();
+            for (CartProducts cartProducts : cartProductsList) {
+
+                entityManager2.remove(cartProducts);
+
+            }
+
+            entityTransaction.commit();
+            entityManager2.close();
+            return "Cart is deleted succesfully";
+        
+
     }
 
 }

@@ -60,7 +60,7 @@ public class OrderController {
 
             GenericEntity<List<OrderDto>> entity = new GenericEntity<List<OrderDto>>(orderDtoList) {
             };
-            
+
             return Response.ok().entity(entity).build();
 
         } catch (Exception e) {
@@ -98,7 +98,7 @@ public class OrderController {
             orderDto.setUserDto(userDto);
             GenericEntity<OrderDto> entity = new GenericEntity<OrderDto>(orderDto) {
             };
-            
+
             return Response.ok().entity(entity).build();
         } catch (Exception e) {
 
@@ -128,15 +128,15 @@ public class OrderController {
         for (CartProducts cartProducts : cartProductsList) {
             if (cartProducts.getCartId().getUserId() == userId) {
 
-                 int productQuantity =cartProducts.getProduct().getQuantity();
-                if(productQuantity ==0){
+                int productQuantity = cartProducts.getProduct().getQuantity();
+                if (productQuantity == 0) {
 
                     return "we are sorry but the product is out of stock !!";
                 }
-                if(productQuantity < cartProducts.getQuantity()){
+                if (productQuantity < cartProducts.getQuantity()) {
 
-                    return "the"+ cartProducts.getProduct().getName()+" product quantity\n"+ 
-                     "in stock is only : "+productQuantity;
+                    return "the" + cartProducts.getProduct().getName() + " product quantity\n" +
+                            "in stock is only : " + productQuantity;
                 }
                 totalPrice += cartProducts.getTotalPrice();
             }
@@ -213,7 +213,7 @@ public class OrderController {
 
     @DELETE
     @Path("{uid}")
-    public String deleteCategory(@PathParam("uid") int userId) {
+    public String deleteOrder(@PathParam("uid") int userId) {
 
         try {
             EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -237,7 +237,6 @@ public class OrderController {
 
     private List<CartProducts> getUserCart(EntityManager entityManager) {
         TypedQuery<CartProducts> query2 = entityManager.createQuery("select C from CartProducts C", CartProducts.class);
-
         List<CartProducts> cartProductsList = query2.getResultList();
 
         return cartProductsList;
