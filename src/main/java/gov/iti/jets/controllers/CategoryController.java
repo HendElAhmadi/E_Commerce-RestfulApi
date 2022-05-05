@@ -112,7 +112,7 @@ public class CategoryController {
     @GET
     @Path("{cid}/products")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Response getCategories(@PathParam("cid") Integer id) {
+    public Response getProducts(@PathParam("cid") Integer id) {
 
         TypedQuery<Category> query = entityManager
                 .createQuery("select c from Category c where c.id= :id ", Category.class)
