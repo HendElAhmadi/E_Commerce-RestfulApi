@@ -48,6 +48,7 @@ public class ProductController {
                 productDto.setName(product.getName());
                 productDto.setCategories(product.getCategories());
                 productDto.setDescription(product.getDescription());
+                productDto.setQuantity(product.getQuantity());
                 productDto.setPrice(product.getPrice());
                 productDtoList.add(productDto);
             }
@@ -79,6 +80,7 @@ public class ProductController {
             productDto.setName(product.getName());
             productDto.setCategories(product.getCategories());
             productDto.setDescription(product.getDescription());
+            productDto.setQuantity(product.getQuantity());
             productDto.setPrice(product.getPrice());
 
             GenericEntity<ProductDto> entity = new GenericEntity<ProductDto>(productDto) {
@@ -108,6 +110,7 @@ public class ProductController {
             productDto.setName(product.getName());
             productDto.setCategories(product.getCategories());
             productDto.setDescription(product.getDescription());
+            productDto.setQuantity(product.getQuantity());
             productDto.setPrice(product.getPrice());
             GenericEntity<ProductDto> entity = new GenericEntity<ProductDto>(productDto) {
             };
