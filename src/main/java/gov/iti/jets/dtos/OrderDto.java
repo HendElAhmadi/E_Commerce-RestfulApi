@@ -1,24 +1,19 @@
 package gov.iti.jets.dtos;
 
-import jakarta.json.bind.annotation.JsonbTransient;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlElement;
+
 import jakarta.xml.bind.annotation.XmlRootElement;
-import jakarta.xml.bind.annotation.XmlTransient;
+
 
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+
 public class OrderDto {
 
-    @XmlElement
     private int id;
 
-    @XmlTransient
-    @JsonbTransient
+   
     private UserDto userDto;
 
-    @XmlElement
+    
     private int totalPrice;
 
     public OrderDto() {

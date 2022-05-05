@@ -18,7 +18,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.DELETE;
+
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -27,7 +27,7 @@ import jakarta.ws.rs.Path;
 public class CategoryController {
 
     private final static EntityManagerFactory entityManagerFactory = ManagerFactory.getEntityManagerFactory();
-    private final EntityManager entityManager = entityManagerFactory.createEntityManager();
+    private EntityManager entityManager = entityManagerFactory.createEntityManager();
 
     @GET
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })

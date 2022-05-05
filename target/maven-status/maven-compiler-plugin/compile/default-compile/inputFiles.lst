@@ -8,6 +8,7 @@ E:\ITI-JETS\REST API\labs\rest-api-design\src\main\java\gov\iti\jets\persistence
 E:\ITI-JETS\REST API\labs\rest-api-design\src\main\java\gov\iti\jets\dtos\UserDto.java
 E:\ITI-JETS\REST API\labs\rest-api-design\src\main\java\gov\iti\jets\persistence\entities\Category.java
 E:\ITI-JETS\REST API\labs\rest-api-design\src\main\java\gov\iti\jets\persistence\entities\Order.java
+E:\ITI-JETS\REST API\labs\rest-api-design\src\main\java\gov\iti\jets\dtos\UserWalletDto.java
 E:\ITI-JETS\REST API\labs\rest-api-design\src\main\java\gov\iti\jets\dtos\UserCart.java
 E:\ITI-JETS\REST API\labs\rest-api-design\src\main\java\gov\iti\jets\controllers\CartController.java
 E:\ITI-JETS\REST API\labs\rest-api-design\src\main\java\gov\iti\jets\persistence\entities\UserType.java

@@ -521,6 +521,32 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "add to user wallet",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\r\n<userWalletDto>\r\n  <userWallet>700.0</userWallet>\r\n</userWalletDto>"
+				},
+				"url": {
+					"raw": "http://localhost:9797/test/api/users/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
