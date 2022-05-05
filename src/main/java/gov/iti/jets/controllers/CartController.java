@@ -108,54 +108,58 @@ public class CartController {
     public String addToCart(@PathParam("uid") int userId, @QueryParam("name") String productName,
             @QueryParam("quantity") int quantity) {
 
-        EntityManager entityManager2 = entityManagerFactory.createEntityManager();
-        TypedQuery<Product> query = entityManager2
-                .createQuery("select p from Product p where p.name= :name ", Product.class)
-                .setParameter("name", productName);
+        try {
+            EntityManager entityManager2 = entityManagerFactory.createEntityManager();
+            TypedQuery<Product> query = entityManager2
+                    .createQuery("select p from Product p where p.name= :name ", Product.class)
+                    .setParameter("name", productName);
 
-        Product product = query.getSingleResult();
+            Product product = query.getSingleResult();
 
-        int productQuantity = product.getQuantity();
+            int productQuantity = product.getQuantity();
 
-        if (quantity > productQuantity) {
+            if (quantity > productQuantity) {
 
-            return " Product quantity is less than the demanded!!";
-        }
-
-        EntityTransaction entityTransaction = entityManager2.getTransaction();
-        entityTransaction.begin();
-
-        CartId cartId = new CartId();
-        cartId.setProductId(product.getId());
-        cartId.setUserId(userId);
-
-        TypedQuery<CartProducts> query2 = entityManager2
-                .createQuery("select c from CartProducts c where c.cartId= :cartId ", CartProducts.class)
-                .setParameter("cartId", cartId);
-
-        if (query2.getResultList().size() != 0) {
-
-            CartProducts cartProducts = query2.getResultList().get(0);
-            if (cartProducts.getQuantity() == quantity) {
-                return "your product already exist with the same quantiy";
+                return " Product quantity is less than the demanded!!";
             }
+
+            EntityTransaction entityTransaction = entityManager2.getTransaction();
+            entityTransaction.begin();
+
+            CartId cartId = new CartId();
+            cartId.setProductId(product.getId());
+            cartId.setUserId(userId);
+
+            TypedQuery<CartProducts> query2 = entityManager2
+                    .createQuery("select c from CartProducts c where c.cartId= :cartId ", CartProducts.class)
+                    .setParameter("cartId", cartId);
+
+            if (query2.getResultList().size() != 0) {
+
+                CartProducts cartProducts = query2.getResultList().get(0);
+                if (cartProducts.getQuantity() == quantity) {
+                    return "your product already exist with the same quantiy";
+                }
+                setUserCart(cartProducts, product, quantity);
+                entityManager2.persist(cartProducts);
+                entityTransaction.commit();
+                entityManager2.close();
+
+                return "Product is successfully added to your cart!!";
+            }
+
+            CartProducts cartProducts = new CartProducts();
+            cartProducts.setCartId(cartId);
             setUserCart(cartProducts, product, quantity);
             entityManager2.persist(cartProducts);
             entityTransaction.commit();
             entityManager2.close();
 
             return "Product is successfully added to your cart!!";
+        } catch (Exception e) {
 
+            return "ther is no user with this id!!";
         }
-
-        CartProducts cartProducts = new CartProducts();
-        cartProducts.setCartId(cartId);
-        setUserCart(cartProducts, product, quantity);
-        entityManager2.persist(cartProducts);
-        entityTransaction.commit();
-        entityManager2.close();
-
-        return "Product is successfully added to your cart!!";
 
     }
 
@@ -170,27 +174,26 @@ public class CartController {
     public String deleteCart(@PathParam("uid") int userId) {
 
         EntityManager entityManager2 = entityManagerFactory.createEntityManager();
-        
-            TypedQuery<CartProducts> query = entityManager2
-                    .createQuery("select C from CartProducts C where C.user.id= :id ", CartProducts.class)
-                    .setParameter("id", userId);
-            if(query.getResultList().size()==0){
-                return "there is no cart to delete";
-            }
-            List<CartProducts> cartProductsList = query.getResultList();
-            
-            EntityTransaction entityTransaction = entityManager2.getTransaction();
-            entityTransaction.begin();
-            for (CartProducts cartProducts : cartProductsList) {
 
-                entityManager2.remove(cartProducts);
+        TypedQuery<CartProducts> query = entityManager2
+                .createQuery("select C from CartProducts C where C.user.id= :id ", CartProducts.class)
+                .setParameter("id", userId);
+        if (query.getResultList().size() == 0) {
+            return "there is no cart to delete";
+        }
+        List<CartProducts> cartProductsList = query.getResultList();
 
-            }
+        EntityTransaction entityTransaction = entityManager2.getTransaction();
+        entityTransaction.begin();
+        for (CartProducts cartProducts : cartProductsList) {
 
-            entityTransaction.commit();
-            entityManager2.close();
-            return "Cart is deleted succesfully";
-        
+            entityManager2.remove(cartProducts);
+
+        }
+
+        entityTransaction.commit();
+        entityManager2.close();
+        return "Cart is deleted succesfully";
 
     }
 

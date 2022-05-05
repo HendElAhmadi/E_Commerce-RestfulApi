@@ -53,6 +53,7 @@ public class CategoryController {
                     productDto.setName(product.getName());
                     productDto.setCategories(product.getCategories());
                     productDto.setDescription(product.getDescription());
+                    productDto.setQuantity(product.getQuantity());
                     productDto.setPrice(product.getPrice());
                     productDtoList.add(productDto);
                 }
@@ -94,6 +95,7 @@ public class CategoryController {
                 productDto.setName(product.getName());
                 productDto.setCategories(product.getCategories());
                 productDto.setDescription(product.getDescription());
+                productDto.setQuantity(product.getQuantity());
                 productDto.setPrice(product.getPrice());
                 productDtoList.add(productDto);
             }
@@ -127,6 +129,7 @@ public class CategoryController {
                 productDto.setName(product.getName());
                 productDto.setCategories(product.getCategories());
                 productDto.setDescription(product.getDescription());
+                productDto.setQuantity(product.getQuantity());
                 productDto.setPrice(product.getPrice());
                 productDtoList.add(productDto);
             }
