@@ -14,6 +14,13 @@ This api gives E_Commerce services
 * user can place an order
 * user can delete his order
 * user can proceed to checkout 
+* user can add money to his wallet
+
+# Handled Cases
+
+when transaction is done  user cart items are deleted as well as to his order ,
+also his money is decreased by the paid amount of money 
+and the product quantity is decreased in stock
 
 
 
