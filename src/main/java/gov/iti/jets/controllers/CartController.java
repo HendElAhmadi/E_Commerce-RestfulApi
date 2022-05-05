@@ -106,11 +106,11 @@ public class CartController {
 
     @POST
     @Path("{uid}")
-
     public String addToCart(@PathParam("uid") int userId, @QueryParam("name") String productName,
             @QueryParam("quantity") int quantity) {
 
-        TypedQuery<Product> query = entityManager
+        EntityManager entityManager2 = entityManagerFactory.createEntityManager();       
+        TypedQuery<Product> query = entityManager2
                 .createQuery("select p from Product p where p.name= :name ", Product.class)
                 .setParameter("name", productName);
 
@@ -123,14 +123,14 @@ public class CartController {
             return " Product quantity is less than the demanded!!";
         }
 
-        EntityTransaction entityTransaction = entityManager.getTransaction();
+        EntityTransaction entityTransaction = entityManager2.getTransaction();
         entityTransaction.begin();
 
         CartId cartId = new CartId();
         cartId.setProductId(product.getId());
         cartId.setUserId(userId);
 
-        TypedQuery<CartProducts> query2 = entityManager
+        TypedQuery<CartProducts> query2 = entityManager2
                 .createQuery("select c from CartProducts c where c.cartId= :cartId ", CartProducts.class)
                 .setParameter("cartId", cartId);
        
@@ -141,8 +141,9 @@ public class CartController {
                 return "your product already exist with the same quantiy";
             }
             setUserCart(cartProducts, product, quantity);
+            entityManager2.persist(cartProducts);
             entityTransaction.commit();
-            entityManager.close();
+            entityManager2.close();
 
             return "Product is successfully added to your cart!!";
 
@@ -151,9 +152,9 @@ public class CartController {
         CartProducts cartProducts = new CartProducts();
         cartProducts.setCartId(cartId);
         setUserCart(cartProducts, product, quantity);
+        entityManager2.persist(cartProducts);
         entityTransaction.commit();
-
-        entityManager.close();
+        entityManager2.close();
 
         return "Product is successfully added to your cart!!";
 
@@ -164,7 +165,7 @@ public class CartController {
         cartProducts.setQuantity(quantity);
         cartProducts.setTotalPrice(product.getPrice() * quantity);
 
-        entityManager.persist(cartProducts);
+       
 
         
     }

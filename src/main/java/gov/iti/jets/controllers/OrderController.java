@@ -110,14 +110,15 @@ public class OrderController {
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public String makeOrder(@PathParam("uid") int userId, OrderDto orderDto) {
 
-        TypedQuery<Order> query = entityManager.createQuery("select o from Order o where o.user.id= :id ", Order.class)
+        EntityManager entityManager2 = entityManagerFactory.createEntityManager();
+        TypedQuery<Order> query = entityManager2.createQuery("select o from Order o where o.user.id= :id ", Order.class)
                 .setParameter("id", userId);
         if (query.getResultList().size() != 0) {
 
             return "order already exists check it out by get Method";
         }
 
-        List<CartProducts> cartProductsList =getUserCart();
+        List<CartProducts> cartProductsList =getUserCart(entityManager2);
         int totalPrice = 0;
         for (CartProducts cartProducts : cartProductsList) {
             if (cartProducts.getCartId().getUserId() == userId) {
@@ -130,16 +131,16 @@ public class OrderController {
 
             return "cart is empty";
         }
-        EntityTransaction entityTransaction = entityManager.getTransaction();
+        EntityTransaction entityTransaction = entityManager2.getTransaction();
         entityTransaction.begin();
 
         Order order = new Order();
         order.setTotalPrice(totalPrice);
-        order.setUser(entityManager.find(User.class, userId));
-        entityManager.persist(order);
+        order.setUser(entityManager2.find(User.class, userId));
+        entityManager2.persist(order);
         entityTransaction.commit();
 
-        entityManager.close();
+        entityManager2.close();
         return "Order is created successfully";
 
     }
@@ -147,8 +148,8 @@ public class OrderController {
     @POST
     @Path("{uid}/checkout")
     public String checkout(@PathParam("uid") int userId) {
-
-        TypedQuery<Order> query = entityManager.createQuery("select o from Order o where o.user.id= :id ", Order.class)
+        EntityManager entityManager2 = entityManagerFactory.createEntityManager();      
+        TypedQuery<Order> query = entityManager2.createQuery("select o from Order o where o.user.id= :id ", Order.class)
                 .setParameter("id", userId);
         if (query.getResultList().size() == 0) {
 
@@ -163,8 +164,8 @@ public class OrderController {
             return "user doesn't have enough money";
         }
 
-        List<CartProducts> cartProductsList = getUserCart();
-        EntityTransaction entityTransaction = entityManager.getTransaction();
+        List<CartProducts> cartProductsList = getUserCart(entityManager2);
+        EntityTransaction entityTransaction = entityManager2.getTransaction();
         entityTransaction.begin();
         int i=0;
         for (CartProducts cartProducts : cartProductsList) {
@@ -176,8 +177,8 @@ public class OrderController {
                 .setParameter("id", cartProducts.getCartId().getProductId());
                 Product product =query2.getSingleResult();
                 product.setQuantity(product.getQuantity()-cartProducts.getQuantity());
-                entityManager.persist(product);
-                entityManager.remove(cartProducts);
+                entityManager2.persist(product);
+                entityManager2.remove(cartProducts);
                 i++;
             }  
         }
@@ -186,9 +187,10 @@ public class OrderController {
             return "there is no cart !!";
         }
         user.setWallet(user.getWallet()-order.getTotalPrice());
-        entityManager.persist(user);
-        entityManager.remove(order);
+        entityManager2.persist(user);
+        entityManager2.remove(order);
         entityTransaction.commit();
+        entityManager2.close();
         return "Transaction done successfully";
 
     }
@@ -197,17 +199,18 @@ public class OrderController {
     @Path("{uid}")
     public String deleteCategory(@PathParam("uid") int userId) {
 
-        TypedQuery<Order> query = entityManager.createQuery("select o from Order o where o.user.id= :id ", Order.class)
+        EntityManager entityManager2 = entityManagerFactory.createEntityManager();
+        TypedQuery<Order> query = entityManager2.createQuery("select o from Order o where o.user.id= :id ", Order.class)
                 .setParameter("id", userId);
-
+        
         try {
-            EntityTransaction entityTransaction = entityManager.getTransaction();
+            EntityTransaction entityTransaction = entityManager2.getTransaction();
             entityTransaction.begin();
             Order order = query.getSingleResult();
 
-            entityManager.remove(order);
+            entityManager2.remove(order);
             entityTransaction.commit();
-            entityManager.close();
+            entityManager2.close();
             return "user order deleted successfully";
         } catch (Exception e) {
 
@@ -216,7 +219,7 @@ public class OrderController {
 
     }
 
-    private List<CartProducts> getUserCart(){
+    private List<CartProducts> getUserCart(EntityManager entityManager ){
         TypedQuery<CartProducts> query2 = entityManager.createQuery("select C from CartProducts C", CartProducts.class);
 
         List<CartProducts> cartProductsList = query2.getResultList();

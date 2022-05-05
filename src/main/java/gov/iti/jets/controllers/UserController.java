@@ -99,14 +99,15 @@ public class UserController {
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public String createUser(UserDto userDto) {
 
-        TypedQuery<User> query = entityManager.createQuery("select u from User u where u.email= :email ", User.class)
+        EntityManager entityManager2 = entityManagerFactory.createEntityManager();
+        TypedQuery<User> query = entityManager2.createQuery("select u from User u where u.email= :email ", User.class)
                 .setParameter("email", userDto.getEmail());
         if (query.getResultList().size() != 0) {
             return "email already exists";
 
         }
 
-        EntityTransaction entityTransaction = entityManager.getTransaction();
+        EntityTransaction entityTransaction = entityManager2.getTransaction();
         entityTransaction.begin();
         User user1 = new User();
         user1.setUserName(userDto.getUserName());
@@ -116,11 +117,11 @@ public class UserController {
         user1.setPhoneNumber(userDto.getPhoneNumber());
         user1.setWallet(userDto.getWallet());
 
-        entityManager.persist(user1);
+        entityManager2.persist(user1);
         entityTransaction.commit();
         System.out.println(user1);
         System.out.println("userDto = " + userDto);
-        entityManager.close();
+        entityManager2.close();
 
         return "user created successfully";
     }
@@ -128,21 +129,22 @@ public class UserController {
     @DELETE
     @Path("{uid}")
     public String deleteUser(@PathParam("uid") int id) {
-
-        TypedQuery<User> query = entityManager.createQuery("select u from User u where u.id= :id ", User.class)
+        
+        EntityManager entityManager2 = entityManagerFactory.createEntityManager();
+        TypedQuery<User> query = entityManager2.createQuery("select u from User u where u.id= :id ", User.class)
                 .setParameter("id", id);
 
-        try {   
-            EntityTransaction entityTransaction = entityManager.getTransaction();
+        try {
+            EntityTransaction entityTransaction = entityManager2.getTransaction();
             entityTransaction.begin();
             User user = query.getSingleResult();
 
-            entityManager.remove(user);
+            entityManager2.remove(user);
             entityTransaction.commit();
-            entityManager.close();
+            entityManager2.close();
             return "user deleted successfully";
         } catch (Exception e) {
-            
+
             return "There is no user with this id!";
         }
 

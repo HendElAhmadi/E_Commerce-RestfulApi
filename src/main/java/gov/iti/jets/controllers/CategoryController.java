@@ -146,7 +146,8 @@ public class CategoryController {
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public String createCategory(CategoryDto categoryDto) {
 
-        TypedQuery<Category> query = entityManager
+        EntityManager entityManager2 = entityManagerFactory.createEntityManager();
+        TypedQuery<Category> query = entityManager2
                 .createQuery("select c from Category c where c.value= :value ", Category.class)
                 .setParameter("value", categoryDto.getValue());
         if (query.getResultList().size() != 0) {
@@ -154,17 +155,17 @@ public class CategoryController {
 
         }
 
-        EntityTransaction entityTransaction = entityManager.getTransaction();
+        EntityTransaction entityTransaction = entityManager2.getTransaction();
         entityTransaction.begin();
         Category category = new Category();
         category.setValue(categoryDto.getValue());
         category.setDescription(categoryDto.getDescription());
 
-        entityManager.persist(category);
+        entityManager2.persist(category);
         entityTransaction.commit();
         System.out.println(category);
         System.out.println("categoryDto = " + categoryDto);
-        entityManager.close();
+        entityManager2.close();
 
         return "Category is created successfully";
 
