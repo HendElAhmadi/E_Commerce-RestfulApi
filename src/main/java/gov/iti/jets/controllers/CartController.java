@@ -225,7 +225,7 @@ public class CartController {
 
         entityTransaction.commit();
         entityManager2.close();
-        return "product is deleted succesfully form cart";
+        return "product is deleted succesfully form cart , AND If you have an order you can update it now !!";
 
     }
 
