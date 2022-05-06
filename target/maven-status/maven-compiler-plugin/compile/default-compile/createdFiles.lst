@@ -1,4 +1,5 @@
 gov\iti\jets\controllers\CartController.class
+gov\iti\jets\controllers\ProductController$9.class
 gov\iti\jets\controllers\CategoryController$5.class
 gov\iti\jets\controllers\ProductController$2.class
 gov\iti\jets\dtos\CartDto.class

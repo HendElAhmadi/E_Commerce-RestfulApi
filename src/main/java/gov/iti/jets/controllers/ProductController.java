@@ -3,6 +3,7 @@ package gov.iti.jets.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import gov.iti.jets.persistence.entities.CartProducts;
 import gov.iti.jets.persistence.entities.Category;
 import gov.iti.jets.persistence.entities.Product;
 import gov.iti.jets.persistence.util.ManagerFactory;
@@ -37,30 +38,31 @@ public class ProductController {
     public Response getAllProducts() {
 
         TypedQuery<Product> query = entityManager.createQuery("select p from Product p", Product.class);
-        try {
-            List<Product> productList = query.getResultList();
-            ProductDto productDto;
-            List<ProductDto> productDtoList = new ArrayList<ProductDto>();
-            for (Product product : productList) {
-                productDto = new ProductDto();
 
-                productDto.setId(product.getId());
-                productDto.setName(product.getName());
-                productDto.setCategories(product.getCategories());
-                productDto.setDescription(product.getDescription());
-                productDto.setQuantity(product.getQuantity());
-                productDto.setPrice(product.getPrice());
-                productDtoList.add(productDto);
-            }
+        List<Product> productList = query.getResultList();
+        ProductDto productDto;
+        List<ProductDto> productDtoList = new ArrayList<ProductDto>();
+        for (Product product : productList) {
+            productDto = new ProductDto();
 
-            GenericEntity<List<ProductDto>> entity = new GenericEntity<List<ProductDto>>(productDtoList) {
-            };
-            return Response.ok().entity(entity).build();
-        } catch (Exception e) {
-            GenericEntity<String> message = new GenericEntity<String>("There is no products!") {
+            productDto.setId(product.getId());
+            productDto.setName(product.getName());
+            productDto.setCategories(product.getCategories());
+            productDto.setDescription(product.getDescription());
+            productDto.setQuantity(product.getQuantity());
+            productDto.setPrice(product.getPrice());
+            productDtoList.add(productDto);
+        }
+
+        if (productDtoList.size() == 0) {
+            GenericEntity<String> message = new GenericEntity<String>("There are no products!") {
             };
             return Response.ok().entity(message).build();
         }
+
+        GenericEntity<List<ProductDto>> entity = new GenericEntity<List<ProductDto>>(productDtoList) {
+        };
+        return Response.ok().entity(entity).build();
 
     }
 
@@ -96,11 +98,10 @@ public class ProductController {
 
     @GET
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Response getProductByName(@QueryParam("id") int id, @QueryParam("name") String name) {
+    public Response getProductByName(@QueryParam("name") String name) {
 
         TypedQuery<Product> query = entityManager
-                .createQuery("select p from Product p where p.id= :id and p.name= :name", Product.class)
-                .setParameter("id", id)
+                .createQuery("select p from Product p where  p.name= :name", Product.class)
                 .setParameter("name", name);
         try {
             Product product = query.getSingleResult();
@@ -116,7 +117,7 @@ public class ProductController {
             };
             return Response.ok().entity(entity).build();
         } catch (Exception e) {
-            GenericEntity<String> message = new GenericEntity<String>("There is no products!") {
+            GenericEntity<String> message = new GenericEntity<String>("There is no product with this name!") {
             };
             return Response.ok().entity(message).build();
         }
@@ -128,9 +129,12 @@ public class ProductController {
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response getCategories(@PathParam("pid") Integer id) {
 
-        TypedQuery<Product> query = entityManager.createQuery("select p from Product p where p.id= :id ", Product.class)
-                .setParameter("id", id);
         try {
+
+            TypedQuery<Product> query = entityManager
+                    .createQuery("select p from Product p where p.id= :id ", Product.class)
+                    .setParameter("id", id);
+
             Product product = query.getSingleResult();
 
             List<CategoryDto> categoryDtoList = new ArrayList<CategoryDto>();
@@ -143,13 +147,20 @@ public class ProductController {
                 categoryDtoList.add(categoryDto);
             }
 
+            if (categoryDtoList.size() == 0) {
+                GenericEntity<String> message = new GenericEntity<String>("There is no categoryList!") {
+                };
+                return Response.ok().entity(message).build();
+            }
+
             GenericEntity<List<CategoryDto>> entity = new GenericEntity<List<CategoryDto>>(categoryDtoList) {
             };
             return Response.ok().entity(entity).build();
         } catch (Exception e) {
-            GenericEntity<String> message = new GenericEntity<String>("There is no categoryList!") {
-            };
-            return Response.ok().entity(message).build();
+
+            GenericEntity<String> message = new GenericEntity<String>("There is no product with this id") {
+                };
+                return Response.ok().entity(message).build();
         }
 
     }
@@ -196,6 +207,19 @@ public class ProductController {
             EntityTransaction entityTransaction = entityManager2.getTransaction();
             entityTransaction.begin();
             Product product = query.getSingleResult();
+
+            TypedQuery<CartProducts> query3 = entityManager2
+                    .createQuery("select C from CartProducts C where C.product.id= :id ", CartProducts.class)
+                    .setParameter("id", id);
+            
+            if (query3.getResultList().size() != 0) {
+                List<CartProducts>CartProductsList=query3.getResultList();
+                List<Integer>cartIds=new ArrayList<>();
+                for (CartProducts cartProducts:CartProductsList) {
+                    cartIds.add(cartProducts.getCartId().getUserId());
+                }
+                return "Here are the users Ids who use this product: "+cartIds+"\n ,you should delete theirs carts first";
+            }
 
             entityManager2.remove(product);
             entityTransaction.commit();

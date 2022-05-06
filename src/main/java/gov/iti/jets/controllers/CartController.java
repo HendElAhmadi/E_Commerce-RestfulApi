@@ -37,32 +37,33 @@ public class CartController {
     public Response getAllcarts() {
 
         TypedQuery<CartProducts> query = entityManager.createQuery("select C from CartProducts C", CartProducts.class);
-        try {
 
-            List<CartProducts> cartProductsList = query.getResultList();
-            CartDto cartDto;
-            List<CartDto> cartDtoList = new ArrayList<CartDto>();
-            for (CartProducts cartProducts : cartProductsList) {
+        List<CartProducts> cartProductsList = query.getResultList();
+        CartDto cartDto;
+        List<CartDto> cartDtoList = new ArrayList<CartDto>();
+        for (CartProducts cartProducts : cartProductsList) {
 
-                cartDto = new CartDto();
+            cartDto = new CartDto();
 
-                cartDto.setCartProductId(cartProducts.getCartId().getProductId());
-                cartDto.setCartUserId(cartProducts.getCartId().getUserId());
-                cartDto.setTotalPrice(cartProducts.getTotalPrice());
-                cartDto.setQuantity(cartProducts.getQuantity());
+            cartDto.setCartProductId(cartProducts.getCartId().getProductId());
+            cartDto.setCartUserId(cartProducts.getCartId().getUserId());
+            cartDto.setTotalPrice(cartProducts.getTotalPrice());
+            cartDto.setQuantity(cartProducts.getQuantity());
 
-                cartDtoList.add(cartDto);
-            }
+            cartDtoList.add(cartDto);
+        }
 
-            GenericEntity<List<CartDto>> entity = new GenericEntity<List<CartDto>>(cartDtoList) {
-            };
-            return Response.ok().entity(entity).build();
+        if (cartDtoList.size() == 0) {
 
-        } catch (Exception e) {
-            GenericEntity<String> message = new GenericEntity<String>("There is no carts!") {
+            GenericEntity<String> message = new GenericEntity<String>("There are no carts!") {
             };
             return Response.ok().entity(message).build();
+
         }
+
+        GenericEntity<List<CartDto>> entity = new GenericEntity<List<CartDto>>(cartDtoList) {
+        };
+        return Response.ok().entity(entity).build();
 
     }
 
@@ -194,6 +195,37 @@ public class CartController {
         entityTransaction.commit();
         entityManager2.close();
         return "Cart is deleted succesfully";
+
+    }
+
+    @DELETE
+    @Path("deleteProduct/{userId}")
+    public String deleteProductInCart(@PathParam("userId") int userId, @QueryParam("productId") int pId) {
+
+        EntityManager entityManager2 = entityManagerFactory.createEntityManager();
+
+        TypedQuery<CartProducts> query = entityManager2
+                .createQuery("select C from CartProducts C where C.user.id= :id and C.product.id= :pid",
+                        CartProducts.class)
+                .setParameter("id", userId)
+                .setParameter("pid", pId);
+        if (query.getResultList().size() == 0) {
+            return "there is no product to delete";
+        }
+
+        List<CartProducts> cartProductsList = query.getResultList();
+
+        EntityTransaction entityTransaction = entityManager2.getTransaction();
+        entityTransaction.begin();
+        for (CartProducts cartProducts : cartProductsList) {
+
+        entityManager2.remove(cartProducts);
+
+        }
+
+        entityTransaction.commit();
+        entityManager2.close();
+        return "product is deleted succesfully form cart";
 
     }
 
