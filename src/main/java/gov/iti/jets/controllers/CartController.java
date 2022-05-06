@@ -6,7 +6,8 @@ import java.util.List;
 import gov.iti.jets.persistence.entities.CartId;
 import gov.iti.jets.persistence.entities.CartProducts;
 import gov.iti.jets.persistence.entities.Product;
-
+import gov.iti.jets.persistence.entitiesservices.QueryService;
+import gov.iti.jets.persistence.entitiesservices.QueryServiceImpl;
 import gov.iti.jets.persistence.util.ManagerFactory;
 import gov.iti.jets.dtos.CartDto;
 import gov.iti.jets.dtos.UserCart;
@@ -30,13 +31,14 @@ public class CartController {
 
     private final static EntityManagerFactory entityManagerFactory = ManagerFactory.getEntityManagerFactory();
     private EntityManager entityManager = entityManagerFactory.createEntityManager();
+    private QueryService queryService =new QueryServiceImpl();
 
     @GET
     @Path("*")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response getAllcarts() {
 
-        TypedQuery<CartProducts> query = entityManager.createQuery("select C from CartProducts C", CartProducts.class);
+        TypedQuery<CartProducts> query = queryService.getAllCarts(entityManager);
 
         List<CartProducts> cartProductsList = query.getResultList();
         CartDto cartDto;
@@ -72,8 +74,7 @@ public class CartController {
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response getUserCart(@PathParam("uid") int userId) {
 
-        TypedQuery<CartProducts> query = entityManager.createQuery("select C from CartProducts C", CartProducts.class);
-
+        TypedQuery<CartProducts> query = queryService.getCartByUserId(entityManager, userId);
         List<CartProducts> cartProductsList = query.getResultList();
         UserCart userCart;
         List<UserCart> userCartList = new ArrayList<UserCart>();
@@ -111,9 +112,7 @@ public class CartController {
 
         try {
             EntityManager entityManager2 = entityManagerFactory.createEntityManager();
-            TypedQuery<Product> query = entityManager2
-                    .createQuery("select p from Product p where p.name= :name ", Product.class)
-                    .setParameter("name", productName);
+            TypedQuery<Product> query = queryService.getProductByName(entityManager2, productName);
 
             Product product = query.getSingleResult();
 
@@ -131,9 +130,7 @@ public class CartController {
             cartId.setProductId(product.getId());
             cartId.setUserId(userId);
 
-            TypedQuery<CartProducts> query2 = entityManager2
-                    .createQuery("select c from CartProducts c where c.cartId= :cartId ", CartProducts.class)
-                    .setParameter("cartId", cartId);
+            TypedQuery<CartProducts> query2 = queryService.getCartByCartId(entityManager2, cartId);
 
             if (query2.getResultList().size() != 0) {
 
@@ -176,9 +173,7 @@ public class CartController {
 
         EntityManager entityManager2 = entityManagerFactory.createEntityManager();
 
-        TypedQuery<CartProducts> query = entityManager2
-                .createQuery("select C from CartProducts C where C.user.id= :id ", CartProducts.class)
-                .setParameter("id", userId);
+        TypedQuery<CartProducts> query = queryService.getCartByUserId(entityManager2, userId);
         if (query.getResultList().size() == 0) {
             return "there is no cart to delete";
         }
@@ -204,11 +199,7 @@ public class CartController {
 
         EntityManager entityManager2 = entityManagerFactory.createEntityManager();
 
-        TypedQuery<CartProducts> query = entityManager2
-                .createQuery("select C from CartProducts C where C.user.id= :id and C.product.id= :pid",
-                        CartProducts.class)
-                .setParameter("id", userId)
-                .setParameter("pid", pId);
+        TypedQuery<CartProducts> query = queryService.getCartByUserAndProductIds(entityManager2, userId, pId);
         if (query.getResultList().size() == 0) {
             return "there is no product to delete";
         }

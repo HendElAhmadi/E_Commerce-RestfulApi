@@ -6,6 +6,8 @@ import java.util.List;
 import gov.iti.jets.persistence.entities.CartProducts;
 import gov.iti.jets.persistence.entities.Order;
 import gov.iti.jets.persistence.entities.User;
+import gov.iti.jets.persistence.entitiesservices.QueryService;
+import gov.iti.jets.persistence.entitiesservices.QueryServiceImpl;
 import gov.iti.jets.persistence.util.ManagerFactory;
 import gov.iti.jets.dtos.UserDto;
 import gov.iti.jets.dtos.UserWalletDto;
@@ -29,14 +31,14 @@ import jakarta.ws.rs.core.Response;
 public class UserController {
 
     private final static EntityManagerFactory entityManagerFactory = ManagerFactory.getEntityManagerFactory();
-
     private EntityManager entityManager = entityManagerFactory.createEntityManager();
+    private QueryService queryService = new QueryServiceImpl();
 
     @GET
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response getAllUsers() {
 
-        TypedQuery<User> query = entityManager.createQuery("select u from User u", User.class);
+        TypedQuery<User> query = queryService.getAllUsers(entityManager);
         List<User> userList = query.getResultList();
         UserDto userDto;
         List<UserDto> userDtoList = new ArrayList<UserDto>();
@@ -72,8 +74,7 @@ public class UserController {
 
         try {
 
-            TypedQuery<User> query = entityManager.createQuery("select u from User u where u.id= :id ", User.class)
-                    .setParameter("id", id);
+            TypedQuery<User> query = queryService.getUserById(entityManager,id);
             User user = query.getSingleResult();
 
             UserDto userDto = new UserDto();
@@ -103,15 +104,14 @@ public class UserController {
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public String createUser(UserDto userDto) {
 
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        TypedQuery<User> query = entityManager.createQuery("select u from User u where u.email= :email ", User.class)
-                .setParameter("email", userDto.getEmail());
+        EntityManager entityManager2 = entityManagerFactory.createEntityManager();
+        TypedQuery<User> query = queryService.getUserEmail(entityManager2, userDto.getEmail());
         if (query.getResultList().size() != 0) {
             return "email already exists";
 
         }
 
-        EntityTransaction entityTransaction = entityManager.getTransaction();
+        EntityTransaction entityTransaction = entityManager2.getTransaction();
         entityTransaction.begin();
         User user1 = new User();
         user1.setUserName(userDto.getUserName());
@@ -121,11 +121,11 @@ public class UserController {
         user1.setPhoneNumber(userDto.getPhoneNumber());
         user1.setWallet(userDto.getWallet());
 
-        entityManager.persist(user1);
+        entityManager2.persist(user1);
         entityTransaction.commit();
         System.out.println(user1);
         System.out.println("userDto = " + userDto);
-        entityManager.close();
+        entityManager2.close();
 
         return "user created successfully";
     }
@@ -135,25 +135,20 @@ public class UserController {
     public String deleteUser(@PathParam("uid") int id) {
 
         EntityManager entityManager2 = entityManagerFactory.createEntityManager();
-        TypedQuery<User> query = entityManager2.createQuery("select u from User u where u.id= :id ", User.class)
-                .setParameter("id", id);
+        TypedQuery<User> query =  queryService.getUserById(entityManager2, id);
 
         try {
             EntityTransaction entityTransaction = entityManager2.getTransaction();
             entityTransaction.begin();
             User user = query.getSingleResult();
 
-            TypedQuery<Order> query2 = entityManager2
-                    .createQuery("select o from Order o where o.user.id= :id ", Order.class)
-                    .setParameter("id", id);
+            TypedQuery<Order> query2 = queryService.getOrderByUserId(entityManager2, id);
             if (query2.getResultList().size() != 0) {
 
                 return "user has an order ,you should delete order first";
             }
 
-            TypedQuery<CartProducts> query3 = entityManager2
-                    .createQuery("select C from CartProducts C where C.user.id= :id ", CartProducts.class)
-                    .setParameter("id", id);
+            TypedQuery<CartProducts> query3 = queryService.getCartByUserId(entityManager2, id);
             if (query3.getResultList().size() != 0) {
 
                 return "user has a cart ,you should delete the  user cart first";
@@ -174,9 +169,7 @@ public class UserController {
     @Path("{uid}")
     public String upadateUserWallet(@PathParam("uid") int id, UserWalletDto userWalletDto) {
 
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        TypedQuery<User> query = entityManager.createQuery("select u from User u where u.id= :id ", User.class)
-                .setParameter("id", id);
+        TypedQuery<User> query =  queryService.getUserById(entityManager, id);
 
         try {
             EntityTransaction entityTransaction = entityManager.getTransaction();
@@ -186,7 +179,7 @@ public class UserController {
             user.setWallet(user.getWallet() + userWalletDto.getUserWallet());
             entityManager.persist(user);
             entityTransaction.commit();
-            entityManager.close();
+           
             return "User wallet updated successfully";
         } catch (Exception e) {
 
