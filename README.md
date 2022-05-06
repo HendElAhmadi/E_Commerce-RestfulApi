@@ -41,6 +41,7 @@ This api gives E_Commerce services
     *  get all orders
     *  get user's order by userId
     *  make order by user's id
+    *  update order by user's id
     *  checkout by userId
     *  delete order by userId
 
