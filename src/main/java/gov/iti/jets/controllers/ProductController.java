@@ -6,6 +6,8 @@ import java.util.List;
 import gov.iti.jets.persistence.entities.CartProducts;
 import gov.iti.jets.persistence.entities.Category;
 import gov.iti.jets.persistence.entities.Product;
+import gov.iti.jets.persistence.entitiesservices.QueryService;
+import gov.iti.jets.persistence.entitiesservices.QueryServiceImpl;
 import gov.iti.jets.persistence.util.ManagerFactory;
 import gov.iti.jets.dtos.CategoryDto;
 import gov.iti.jets.dtos.ProductDto;
@@ -31,13 +33,14 @@ public class ProductController {
 
     private final static EntityManagerFactory entityManagerFactory = ManagerFactory.getEntityManagerFactory();
     private EntityManager entityManager = entityManagerFactory.createEntityManager();
+    private QueryService queryService = new QueryServiceImpl();
 
     @GET
     @Path("*")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response getAllProducts() {
 
-        TypedQuery<Product> query = entityManager.createQuery("select p from Product p", Product.class);
+        TypedQuery<Product> query = queryService.getAllProducts(entityManager);
 
         List<Product> productList = query.getResultList();
         ProductDto productDto;
@@ -71,8 +74,7 @@ public class ProductController {
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response getProduct(@PathParam("pid") int id) {
 
-        TypedQuery<Product> query = entityManager.createQuery("select p from Product p where p.id= :id ", Product.class)
-                .setParameter("id", id);
+        TypedQuery<Product> query = queryService.getProductById(entityManager, id);
         try {
             Product product = query.getSingleResult();
 
@@ -100,9 +102,7 @@ public class ProductController {
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response getProductByName(@QueryParam("name") String name) {
 
-        TypedQuery<Product> query = entityManager
-                .createQuery("select p from Product p where  p.name= :name", Product.class)
-                .setParameter("name", name);
+        TypedQuery<Product> query = queryService.getProductByName(entityManager, name);
         try {
             Product product = query.getSingleResult();
             ProductDto productDto = new ProductDto();
@@ -131,9 +131,8 @@ public class ProductController {
 
         try {
 
-            TypedQuery<Product> query = entityManager
-                    .createQuery("select p from Product p where p.id= :id ", Product.class)
-                    .setParameter("id", id);
+            TypedQuery<Product> query = queryService.getProductById(entityManager, id);
+
 
             Product product = query.getSingleResult();
 
@@ -169,9 +168,8 @@ public class ProductController {
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public String createProduct(ProductDto productDto) {
         EntityManager entityManager2 = entityManagerFactory.createEntityManager();
-        TypedQuery<Product> query = entityManager2
-                .createQuery("select p from Product p where p.name= :name ", Product.class)
-                .setParameter("name", productDto.getName());
+        TypedQuery<Product> query = queryService.getProductByName(entityManager2, productDto.getName());
+        
         if (query.getResultList().size() != 0) {
             return "Product already exists";
 
@@ -199,18 +197,14 @@ public class ProductController {
     public String deleteProduct(@PathParam("pid") int id) {
 
         EntityManager entityManager2 = entityManagerFactory.createEntityManager();
-        TypedQuery<Product> query = entityManager2
-                .createQuery("select p from Product p where p.id= :id ", Product.class)
-                .setParameter("id", id);
+        TypedQuery<Product> query = queryService.getProductById(entityManager2, id);
 
         try {
             EntityTransaction entityTransaction = entityManager2.getTransaction();
             entityTransaction.begin();
             Product product = query.getSingleResult();
 
-            TypedQuery<CartProducts> query3 = entityManager2
-                    .createQuery("select C from CartProducts C where C.product.id= :id ", CartProducts.class)
-                    .setParameter("id", id);
+            TypedQuery<CartProducts> query3 = queryService.getCartByProductId(entityManager2, id);
             
             if (query3.getResultList().size() != 0) {
                 List<CartProducts>CartProductsList=query3.getResultList();
@@ -237,9 +231,7 @@ public class ProductController {
     public String updateProductQuantity(@PathParam("pid") int id, @QueryParam("quantity") int quantity) {
 
         EntityManager entityManager2 = entityManagerFactory.createEntityManager();
-        TypedQuery<Product> query = entityManager2
-                .createQuery("select p from Product p where p.id= :id ", Product.class)
-                .setParameter("id", id);
+        TypedQuery<Product> query = queryService.getProductById(entityManager2, id);
 
         try {
             EntityTransaction entityTransaction = entityManager2.getTransaction();

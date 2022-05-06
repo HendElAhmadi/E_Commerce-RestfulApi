@@ -4,6 +4,7 @@ gov\iti\jets\controllers\CategoryController$5.class
 gov\iti\jets\controllers\ProductController$2.class
 gov\iti\jets\dtos\CartDto.class
 gov\iti\jets\controllers\OrderController.class
+gov\iti\jets\persistence\entitiesservices\QueryService.class
 gov\iti\jets\controllers\ProductController$6.class
 gov\iti\jets\controllers\CartController$3.class
 gov\iti\jets\dtos\UserWalletDto.class
@@ -44,5 +45,6 @@ gov\iti\jets\controllers\CategoryController$2.class
 gov\iti\jets\persistence\entities\CartProducts.class
 gov\iti\jets\controllers\OrderController$1.class
 gov\iti\jets\persistence\entities\Order.class
+gov\iti\jets\persistence\entitiesservices\QueryServiceImpl.class
 gov\iti\jets\controllers\UserController$2.class
 gov\iti\jets\controllers\ProductController$5.class

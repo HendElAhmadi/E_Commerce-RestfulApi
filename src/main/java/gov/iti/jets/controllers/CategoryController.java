@@ -5,6 +5,8 @@ import java.util.List;
 
 import gov.iti.jets.persistence.entities.Category;
 import gov.iti.jets.persistence.entities.Product;
+import gov.iti.jets.persistence.entitiesservices.QueryService;
+import gov.iti.jets.persistence.entitiesservices.QueryServiceImpl;
 import gov.iti.jets.persistence.util.ManagerFactory;
 import gov.iti.jets.dtos.CategoryDto;
 import gov.iti.jets.dtos.ProductDto;
@@ -28,14 +30,14 @@ public class CategoryController {
 
     private final static EntityManagerFactory entityManagerFactory = ManagerFactory.getEntityManagerFactory();
     private EntityManager entityManager = entityManagerFactory.createEntityManager();
+    private QueryService queryService =new QueryServiceImpl();
 
     @GET
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 
     public Response getAllCategories() {
 
-        TypedQuery<Category> query = entityManager.createQuery("select c from Category c", Category.class);
-
+        TypedQuery<Category> query = queryService.getAllCategories(entityManager);
         List<Category> categoryList = query.getResultList();
         CategoryDto categoryDto;
         List<CategoryDto> categoryDtoList = new ArrayList<CategoryDto>();
@@ -78,9 +80,7 @@ public class CategoryController {
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response getCategory(@PathParam("cid") int id) {
 
-        TypedQuery<Category> query = entityManager
-                .createQuery("select c from Category c where c.id= :id ", Category.class)
-                .setParameter("id", id);
+        TypedQuery<Category> query = queryService.getCategoryById(entityManager, id);
         try {
             Category category = query.getSingleResult();
             CategoryDto categoryDto = new CategoryDto();
@@ -118,9 +118,7 @@ public class CategoryController {
     public Response getProducts(@PathParam("cid") Integer id) {
 
         try{
-        TypedQuery<Category> query = entityManager
-                .createQuery("select c from Category c where c.id= :id ", Category.class)
-                .setParameter("id", id);
+            TypedQuery<Category> query = queryService.getCategoryById(entityManager, id);
 
         Category category = query.getSingleResult();
 
@@ -153,9 +151,7 @@ public class CategoryController {
     public String createCategory(CategoryDto categoryDto) {
 
         EntityManager entityManager2 = entityManagerFactory.createEntityManager();
-        TypedQuery<Category> query = entityManager2
-                .createQuery("select c from Category c where c.value= :value ", Category.class)
-                .setParameter("value", categoryDto.getValue());
+        TypedQuery<Category> query = queryService.getCategoryValue(entityManager2, categoryDto.getValue());
         if (query.getResultList().size() != 0) {
             return "Category already exists";
 

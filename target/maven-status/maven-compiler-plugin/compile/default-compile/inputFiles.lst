@@ -10,8 +10,10 @@ E:\ITI-JETS\REST API\labs\rest-api-design\src\main\java\gov\iti\jets\persistence
 E:\ITI-JETS\REST API\labs\rest-api-design\src\main\java\gov\iti\jets\persistence\entities\Order.java
 E:\ITI-JETS\REST API\labs\rest-api-design\src\main\java\gov\iti\jets\dtos\UserWalletDto.java
 E:\ITI-JETS\REST API\labs\rest-api-design\src\main\java\gov\iti\jets\dtos\UserCart.java
+E:\ITI-JETS\REST API\labs\rest-api-design\src\main\java\gov\iti\jets\persistence\entitiesservices\QueryService.java
 E:\ITI-JETS\REST API\labs\rest-api-design\src\main\java\gov\iti\jets\controllers\CartController.java
 E:\ITI-JETS\REST API\labs\rest-api-design\src\main\java\gov\iti\jets\persistence\entities\UserType.java
+E:\ITI-JETS\REST API\labs\rest-api-design\src\main\java\gov\iti\jets\persistence\entitiesservices\QueryServiceImpl.java
 E:\ITI-JETS\REST API\labs\rest-api-design\src\main\java\gov\iti\jets\controllers\ProductController.java
 E:\ITI-JETS\REST API\labs\rest-api-design\src\main\java\gov\iti\jets\App.java
 E:\ITI-JETS\REST API\labs\rest-api-design\src\main\java\gov\iti\jets\controllers\UserController.java
