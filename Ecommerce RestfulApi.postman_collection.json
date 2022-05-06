@@ -433,6 +433,28 @@
 			"response": []
 		},
 		{
+			"name": "update order by userId",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9797/test/api/orders/9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"orders",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "checkout",
 			"request": {
 				"method": "POST",

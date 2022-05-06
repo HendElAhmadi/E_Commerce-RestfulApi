@@ -17,6 +17,7 @@ import jakarta.persistence.TypedQuery;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -160,6 +161,59 @@ public class OrderController {
 
         entityManager.close();
         return "Order is created successfully";
+
+    }
+
+    @PATCH
+    @Path("{uid}")
+    @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public String updateOrder(@PathParam("uid") int userId) {
+
+        TypedQuery<User> query1 = entityManager.createQuery("select u from User u where u.id= :id ", User.class)
+                .setParameter("id", userId);
+        if (query1.getResultList().size() == 0) {
+            return "user doesn't exist!!";
+        }
+        TypedQuery<Order> query = entityManager.createQuery("select o from Order o where o.user.id= :id ", Order.class)
+                .setParameter("id", userId);
+        if (query.getResultList().size() == 0) {
+
+            return "order doesn't exist";
+        }
+
+        List<CartProducts> cartProductsList = getUserCart(entityManager);
+        int totalPrice = 0;
+        for (CartProducts cartProducts : cartProductsList) {
+            if (cartProducts.getCartId().getUserId() == userId) {
+
+                int productQuantity = cartProducts.getProduct().getQuantity();
+                if (productQuantity == 0) {
+
+                    return "we are sorry but the product is out of stock !!";
+                }
+                if (productQuantity < cartProducts.getQuantity()) {
+
+                    return "the" + cartProducts.getProduct().getName() + " product quantity\n" +
+                            "in stock is only : " + productQuantity;
+                }
+                totalPrice += cartProducts.getTotalPrice();
+            }
+
+        }
+        if (totalPrice == 0) {
+
+            return "cart is empty";
+        }
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+
+        Order order = query.getSingleResult();
+        order.setTotalPrice(totalPrice);
+        entityManager.persist(order);
+        entityTransaction.commit();
+
+        
+        return "Order is updated successfully";
 
     }
 
