@@ -6,147 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "Categories in xml",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:9797/test/api/categories?Accept=applictaion/xml",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "9797",
-					"path": [
-						"test",
-						"api",
-						"categories"
-					],
-					"query": [
-						{
-							"key": "Accept",
-							"value": "applictaion/xml"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Categories in json",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:9797/test/api/categories",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "9797",
-					"path": [
-						"test",
-						"api",
-						"categories"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Categories By Id in json",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:9797/test/api/categories/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "9797",
-					"path": [
-						"test",
-						"api",
-						"categories",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Categories ById in xml",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "all products",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:9797/test/api/products/*",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "9797",
-					"path": [
-						"test",
-						"api",
-						"products",
-						"*"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "all products in xml",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "product by id",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "categories for a product",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "product by queryparam",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "products for a category",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "all users",
+			"name": "get all users",
 			"request": {
 				"method": "GET",
 				"header": [
@@ -173,7 +33,7 @@
 			"response": []
 		},
 		{
-			"name": "user by id",
+			"name": "get user by id",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -237,6 +97,140 @@
 			"response": []
 		},
 		{
+			"name": "delete user by id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9797/test/api/users/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"users",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add to user wallet",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\r\n<userWalletDto>\r\n  <userWallet>700.0</userWallet>\r\n</userWalletDto>"
+				},
+				"url": {
+					"raw": "http://localhost:9797/test/api/users/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get Categories in xml",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9797/test/api/categories?Accept=applictaion/xml",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"categories"
+					],
+					"query": [
+						{
+							"key": "Accept",
+							"value": "applictaion/xml"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get Categories in json",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9797/test/api/categories",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get Categories By Id in json",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9797/test/api/categories/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"categories",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get Categories ById in xml",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "get products for a category",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
 			"name": "add category",
 			"request": {
 				"method": "POST",
@@ -263,6 +257,60 @@
 						"categories"
 					]
 				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9797/test/api/products/*",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"products",
+						"*"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all products in xml",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "get product by id",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "get categories for a product",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "get product by name",
+			"request": {
+				"method": "GET",
+				"header": []
 			},
 			"response": []
 		},
@@ -297,7 +345,145 @@
 			"response": []
 		},
 		{
-			"name": "allcarts",
+			"name": "update product quantity by productId",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9797/test/api/products/1?quantity=4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"products",
+						"1"
+					],
+					"query": [
+						{
+							"key": "quantity",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete product by product Id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9797/test/api/products/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"products",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all orders",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "get order by userId",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "create order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9797/test/api/orders/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"orders",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "checkout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9797/test/api/orders/1?checkout=true",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"orders",
+						"1"
+					],
+					"query": [
+						{
+							"key": "checkout",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete order by user Id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9797/test/api/orders/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"orders",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all carts",
 			"request": {
 				"method": "GET",
 				"header": [
@@ -385,170 +571,6 @@
 			"response": []
 		},
 		{
-			"name": "all orders",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "order by userId",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "create order",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:9797/test/api/orders/2",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "9797",
-					"path": [
-						"test",
-						"api",
-						"orders",
-						"2"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "checkout",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:9797/test/api/orders/1?checkout=true",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "9797",
-					"path": [
-						"test",
-						"api",
-						"orders",
-						"1"
-					],
-					"query": [
-						{
-							"key": "checkout",
-							"value": "true"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "user by id",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:9797/test/api/users/3",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "9797",
-					"path": [
-						"test",
-						"api",
-						"users",
-						"3"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "user order by user Id",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:9797/test/api/orders/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "9797",
-					"path": [
-						"test",
-						"api",
-						"orders",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "update product quantity by productId",
-			"request": {
-				"method": "PATCH",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:9797/test/api/products/1?quantity=4",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "9797",
-					"path": [
-						"test",
-						"api",
-						"products",
-						"1"
-					],
-					"query": [
-						{
-							"key": "quantity",
-							"value": "4"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "add to user wallet",
-			"request": {
-				"method": "PATCH",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\r\n<userWalletDto>\r\n  <userWallet>700.0</userWallet>\r\n</userWalletDto>"
-				},
-				"url": {
-					"raw": "http://localhost:9797/test/api/users/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "9797",
-					"path": [
-						"test",
-						"api",
-						"users",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "cart by user id",
 			"request": {
 				"method": "DELETE",
@@ -565,6 +587,34 @@
 						"api",
 						"cart",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete productfrom cart",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9797/test/api/cart/9?productId=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9797",
+					"path": [
+						"test",
+						"api",
+						"cart",
+						"9"
+					],
+					"query": [
+						{
+							"key": "productId",
+							"value": "1"
+						}
 					]
 				}
 			},

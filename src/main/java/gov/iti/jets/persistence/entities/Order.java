@@ -24,9 +24,7 @@ public class Order implements Serializable {
     @Column(name = "total_price")
     private int totalPrice;
 
-    
-
-    
+ 
 
     public Order() {
     }

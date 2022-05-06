@@ -5,6 +5,7 @@ import java.util.List;
 
 import jakarta.xml.bind.annotation.XmlRootElement;
 
+
 @XmlRootElement
 public class CategoryDto {
     

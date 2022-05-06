@@ -36,40 +36,38 @@ public class OrderController {
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response getAllOrders() {
 
-        try {
-            TypedQuery<Order> query = entityManager.createQuery("select o from Order o", Order.class);
-            List<Order> orderList = query.getResultList();
-            OrderDto orderDto;
-            List<OrderDto> orderDtoList = new ArrayList<OrderDto>();
-            for (Order order : orderList) {
-                orderDto = new OrderDto();
-                orderDto.setId(order.getId());
-                orderDto.setTotalPrice(order.getTotalPrice());
-                User user = order.getUser();
-                UserDto userDto = new UserDto();
-                userDto.setId(user.getId());
-                userDto.setUserType(user.getUserType());
-                userDto.setUserName(user.getUserName());
-                userDto.setEmail(user.getEmail());
-                userDto.setPhoneNumber(user.getPhoneNumber());
-                userDto.setWallet(user.getWallet());
-                userDto.setPassword(user.getPassword());
-                orderDto.setUserDto(userDto);
-                orderDtoList.add(orderDto);
-            }
-
-            GenericEntity<List<OrderDto>> entity = new GenericEntity<List<OrderDto>>(orderDtoList) {
-            };
-
-            return Response.ok().entity(entity).build();
-
-        } catch (Exception e) {
-
-            GenericEntity<String> message = new GenericEntity<String>("There is no orders!") {
+        TypedQuery<Order> query = entityManager.createQuery("select o from Order o", Order.class);
+        List<Order> orderList = query.getResultList();
+        OrderDto orderDto;
+        List<OrderDto> orderDtoList = new ArrayList<OrderDto>();
+        for (Order order : orderList) {
+            orderDto = new OrderDto();
+            orderDto.setId(order.getId());
+            orderDto.setTotalPrice(order.getTotalPrice());
+            User user = order.getUser();
+            UserDto userDto = new UserDto();
+            userDto.setId(user.getId());
+            userDto.setUserType(user.getUserType());
+            userDto.setUserName(user.getUserName());
+            userDto.setEmail(user.getEmail());
+            userDto.setPhoneNumber(user.getPhoneNumber());
+            userDto.setWallet(user.getWallet());
+            userDto.setPassword(user.getPassword());
+            orderDto.setUserDto(userDto);
+            orderDtoList.add(orderDto);
+        }
+        if (orderDtoList.size() == 0) {
+            GenericEntity<String> message = new GenericEntity<String>("There are no orders!") {
             };
 
             return Response.ok().entity(message).build();
+
         }
+
+        GenericEntity<List<OrderDto>> entity = new GenericEntity<List<OrderDto>>(orderDtoList) {
+        };
+
+        return Response.ok().entity(entity).build();
 
     }
 
@@ -117,8 +115,8 @@ public class OrderController {
 
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         TypedQuery<User> query1 = entityManager.createQuery("select u from User u where u.id= :id ", User.class)
-        .setParameter("id", userId);
-        if(query1.getResultList().size()==0){
+                .setParameter("id", userId);
+        if (query1.getResultList().size() == 0) {
             return "user doesn't exist!!";
         }
         TypedQuery<Order> query = entityManager.createQuery("select o from Order o where o.user.id= :id ", Order.class)

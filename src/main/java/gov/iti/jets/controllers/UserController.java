@@ -36,34 +36,32 @@ public class UserController {
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response getAllUsers() {
 
-        try {
-            TypedQuery<User> query = entityManager.createQuery("select u from User u", User.class);
-            List<User> userList = query.getResultList();
-            UserDto userDto;
-            List<UserDto> userDtoList = new ArrayList<UserDto>();
-            for (User user : userList) {
-                userDto = new UserDto();
-                userDto.setId(user.getId());
-                userDto.setUserType(user.getUserType());
-                userDto.setUserName(user.getUserName());
-                userDto.setEmail(user.getEmail());
-                userDto.setPhoneNumber(user.getPhoneNumber());
-                userDto.setWallet(user.getWallet());
-                userDto.setPassword(user.getPassword());
-                userDtoList.add(userDto);
-            }
+        TypedQuery<User> query = entityManager.createQuery("select u from User u", User.class);
+        List<User> userList = query.getResultList();
+        UserDto userDto;
+        List<UserDto> userDtoList = new ArrayList<UserDto>();
+        for (User user : userList) {
+            userDto = new UserDto();
+            userDto.setId(user.getId());
+            userDto.setUserType(user.getUserType());
+            userDto.setUserName(user.getUserName());
+            userDto.setEmail(user.getEmail());
+            userDto.setPhoneNumber(user.getPhoneNumber());
+            userDto.setWallet(user.getWallet());
+            userDto.setPassword(user.getPassword());
+            userDtoList.add(userDto);
+        }
 
-            GenericEntity<List<UserDto>> entity = new GenericEntity<List<UserDto>>(userDtoList) {
-            };
-
-            return Response.ok().entity(entity).build();
-
-        } catch (Exception e) {
-
-            GenericEntity<String> message = new GenericEntity<String>("There is no users!") {
+        if (userDtoList.size() == 0) {
+            GenericEntity<String> message = new GenericEntity<String>("There are no users!") {
             };
             return Response.ok().entity(message).build();
         }
+
+        GenericEntity<List<UserDto>> entity = new GenericEntity<List<UserDto>>(userDtoList) {
+        };
+
+        return Response.ok().entity(entity).build();
 
     }
 
