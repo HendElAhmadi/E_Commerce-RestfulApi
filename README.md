@@ -70,6 +70,33 @@ This api gives E_Commerce services
 
     1. If product is in any cart a a message is sent with users Ids to delete the product from their carts 
     2. If there is not any cart that contains this product then the product  is deleted successfully
+
+
+# MySQL Schema
+
+* Create a database user using MySQL Workbench:
+    1.log in to the MySQL Server using root user
+    2.Create an empty schema eithe the provided name :ecommerce_schema
+    3.Once you are logged in to the MySQL Database Server, in the left-hand window, under the ‘MANAGEMENT’ menu, 
+    there is a link for ‘Users and Privileges’. Open the Users and Privileges.
+    3.click on the Users and Privileges
+    4.to add a new user, click on the ‘Add Account’ button
+    5.give him a username :api and password api 
+    6.in Limit to hosts matching write: localhost
+    7.Then select the Account Limits 
+    8.Then select the Schema Privileges tab
+    9.you can also restrict or allow the new users to access certain databases or schemas from add Entry
+    10.click on the Apply button to save the new user
+
+*  Go to (resources/META-INF/persistence.xml)and make the value of " hibernate.hbm2ddl.auto " property equals to  "create".
+*  Run App.java file  using the following maven command: => mvn clean compile exec:java
+*  After making sure the schema is created
+*  Go back to (resources/META-INF/persistence.xml)and make the value of " hibernate.hbm2ddl.auto " property equals to  "update".
+
+# In Maven 
+
+* Change the configuration of tomcat in `pom.xml` in your project with your localhost port.
+* Deploy your application using the following maven command: => mvn clean compile tomcat7:redeploy
     
 
 
