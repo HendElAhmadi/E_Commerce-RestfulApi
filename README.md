@@ -58,7 +58,7 @@ This api gives E_Commerce services
 3. If two users added the same quantity in their order and one of them checked out:
     
     1. If product quantity gets zero a product out of stock message gets displayed
-    2. If product quantity gets is less than the demanded the user get a message telling him that the quantity is not enough
+    2. If product quantity becomes less than the demanded the user get a message telling him that the quantity is not enough
     
 4. If user is to be deleted:
    
@@ -95,7 +95,7 @@ This api gives E_Commerce services
     
     9.Then select the Schema Privileges tab
     
-    10.you can also restrict or allow the new users to access certain databases or schemas from add Entry
+    10.choose ecommerce_schema from add Entry and give the user all the privileges
     
     11.click on the Apply button to save the new user
 
