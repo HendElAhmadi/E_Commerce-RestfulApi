@@ -121,14 +121,19 @@
 		{
 			"name": "add to user wallet",
 			"request": {
-				"method": "PATCH",
+				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\r\n<userWalletDto>\r\n  <userWallet>700.0</userWallet>\r\n</userWalletDto>"
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\r\n<userWalletDto>\r\n  <userWallet>10.0</userWallet>\r\n</userWalletDto>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
 				},
 				"url": {
-					"raw": "http://localhost:9797/test/api/users/1",
+					"raw": "http://localhost:9797/test/api/users/9",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -138,7 +143,7 @@
 						"test",
 						"api",
 						"users",
-						"1"
+						"9"
 					]
 				}
 			},
@@ -347,10 +352,10 @@
 		{
 			"name": "update product quantity by productId",
 			"request": {
-				"method": "PATCH",
+				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:9797/test/api/products/1?quantity=4",
+					"raw": "http://localhost:9797/test/api/products/2?quantity=15",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -360,12 +365,12 @@
 						"test",
 						"api",
 						"products",
-						"1"
+						"2"
 					],
 					"query": [
 						{
 							"key": "quantity",
-							"value": "4"
+							"value": "15"
 						}
 					]
 				}
@@ -435,7 +440,7 @@
 		{
 			"name": "update order by userId",
 			"request": {
-				"method": "PATCH",
+				"method": "PUT",
 				"header": [],
 				"url": {
 					"raw": "http://localhost:9797/test/api/orders/9",

@@ -19,8 +19,8 @@ import jakarta.persistence.TypedQuery;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
-import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -163,7 +163,7 @@ public class OrderController {
 
     }
 
-    @PATCH
+    @PUT
     @Path("{uid}")
     @Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public String updateOrder(@PathParam("uid") int userId) {
