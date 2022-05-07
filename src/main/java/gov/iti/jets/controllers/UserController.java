@@ -18,8 +18,8 @@ import jakarta.persistence.TypedQuery;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
-import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -165,7 +165,7 @@ public class UserController {
 
     }
 
-    @PATCH
+    @PUT
     @Path("{uid}")
     public String upadateUserWallet(@PathParam("uid") int id, UserWalletDto userWalletDto) {
 
