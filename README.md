@@ -74,7 +74,8 @@ This api gives E_Commerce services
 
 # MySQL Schema
 
-* Create a database user using MySQL Workbench:
+1. Create a database user using MySQL Workbench:
+
     1.log in to the MySQL Server using root user
     2.Create an empty schema eithe the provided name :ecommerce_schema
     3.Once you are logged in to the MySQL Database Server, in the left-hand window, under the ‘MANAGEMENT’ menu, 
@@ -88,10 +89,10 @@ This api gives E_Commerce services
     9.you can also restrict or allow the new users to access certain databases or schemas from add Entry
     10.click on the Apply button to save the new user
 
-*  Go to (resources/META-INF/persistence.xml)and make the value of " hibernate.hbm2ddl.auto " property equals to  "create".
-*  Run App.java file  using the following maven command: => mvn clean compile exec:java
-*  After making sure the schema is created
-*  Go back to (resources/META-INF/persistence.xml)and make the value of " hibernate.hbm2ddl.auto " property equals to  "update".
+2.  Go to (resources/META-INF/persistence.xml)and make the value of " hibernate.hbm2ddl.auto " property equals to  "create".
+3.  Run App.java file  using the following maven command: => mvn clean compile exec:java
+4.  After making sure the schema is created
+5.  Go back to (resources/META-INF/persistence.xml)and make the value of " hibernate.hbm2ddl.auto " property equals to  "update".
 
 # In Maven 
 
